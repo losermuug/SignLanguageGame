@@ -47,8 +47,8 @@ export default function CompletionCard({
           <button
             onClick={onRetry}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold
-              bg-cyber-elevated border border-white/[0.08] text-cyber-text-secondary
-              hover:border-white/[0.15] hover:text-cyber-text
+              bg-cyber-elevated border border-[var(--panel-border)] text-cyber-text-secondary
+              hover:border-[var(--panel-hover-border)] hover:text-cyber-text
               transition-all duration-300 cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />

@@ -21,7 +21,7 @@ export default function ComboDisplay({ streak, comboMultiplier }: ComboDisplayPr
 
   return (
     <motion.div
-      className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-xl"
+      className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-[var(--panel-border)] bg-[var(--panel-bg)] backdrop-blur-xl"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}

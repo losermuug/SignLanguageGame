@@ -30,7 +30,7 @@ export default function LetterTile({
             ? "text-cyber-success border-cyber-success/30 bg-cyber-success/[0.08]"
             : isActive
               ? "text-cyber-cyan border-cyber-cyan/40 bg-cyber-cyan/[0.08] scale-105 letter-active-ring"
-              : "text-cyber-text-muted border-white/[0.06] bg-cyber-surface"
+              : "text-cyber-text-muted border-[var(--panel-border)] bg-cyber-surface"
           }`}
         animate={
           isDone ? { scale: [1, 1.2, 1], transition: { duration: 0.4 } } : {}

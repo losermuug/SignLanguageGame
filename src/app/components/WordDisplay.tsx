@@ -16,7 +16,7 @@ export default function WordDisplay({
   isCompleted,
 }: WordDisplayProps) {
   return (
-    <div className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+    <div className="backdrop-blur-xl bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-2xl p-6">
       {/* Header row */}
       <div className="flex items-center justify-between mb-5">
         <div>
@@ -35,7 +35,7 @@ export default function WordDisplay({
               ? "bg-cyber-success/10 text-cyber-success border-cyber-success/20"
               : charIndex > 0
                 ? "bg-cyber-cyan/10 text-cyber-cyan border-cyber-cyan/20"
-                : "bg-white/[0.05] text-cyber-text-muted border-white/[0.08]"
+                : "bg-[var(--panel-bg)] text-cyber-text-muted border-[var(--panel-border)]"
             }`}
         >
           <div

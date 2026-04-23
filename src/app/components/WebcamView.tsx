@@ -29,7 +29,7 @@ const WebcamView = forwardRef<WebcamViewHandle, WebcamViewProps>(
     };
 
     return (
-      <div className="relative rounded-2xl overflow-hidden bg-cyber-surface border border-white/[0.06] aspect-[4/3]">
+      <div className="relative rounded-2xl overflow-hidden bg-cyber-surface border border-[var(--panel-border)] aspect-[4/3]">
         {/* Webcam or placeholder */}
         {isActive ? (
           <Webcam

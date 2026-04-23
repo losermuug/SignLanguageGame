@@ -1,21 +1,22 @@
 @import "tailwindcss";
 
 /* ============================================
-   DESIGN TOKENS
+   DARK THEME (default)
    ============================================ */
 
-:root {
+:root,
+[data-theme="dark"] {
   --bg-primary: #0a0a0f;
   --bg-secondary: #111119;
   --bg-elevated: #16161f;
   --bg-glass: rgba(22, 22, 31, 0.65);
-  --bg-glass-hover: rgba(22, 22, 31, 0.85);
 
   --accent-cyan: #00f0ff;
   --accent-purple: #a855f7;
   --accent-pink: #f472b6;
   --accent-success: #34d399;
   --accent-warning: #fbbf24;
+  --accent-danger: #f87171;
 
   --text-primary: #f0f0f8;
   --text-secondary: #9ca3af;
@@ -27,7 +28,56 @@
   --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.15), 0 0 60px rgba(0, 240, 255, 0.05);
   --glow-purple: 0 0 20px rgba(168, 85, 247, 0.15), 0 0 60px rgba(168, 85, 247, 0.05);
   --glow-success: 0 0 20px rgba(52, 211, 153, 0.2), 0 0 60px rgba(52, 211, 153, 0.08);
+
+  --grid-line: rgba(0, 240, 255, 0.015);
+  --ambient-cyan: rgba(0, 240, 255, 0.06);
+  --ambient-purple: rgba(168, 85, 247, 0.04);
+
+  --panel-bg: rgba(255, 255, 255, 0.03);
+  --panel-border: rgba(255, 255, 255, 0.06);
+  --panel-hover-border: rgba(255, 255, 255, 0.12);
 }
+
+/* ============================================
+   LIGHT THEME
+   ============================================ */
+
+[data-theme="light"] {
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-elevated: #edf0f5;
+  --bg-glass: rgba(255, 255, 255, 0.75);
+
+  --accent-cyan: #0891b2;
+  --accent-purple: #7c3aed;
+  --accent-pink: #db2777;
+  --accent-success: #059669;
+  --accent-warning: #d97706;
+  --accent-danger: #dc2626;
+
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-accent: rgba(8, 145, 178, 0.25);
+
+  --glow-cyan: 0 0 15px rgba(8, 145, 178, 0.1), 0 0 40px rgba(8, 145, 178, 0.04);
+  --glow-purple: 0 0 15px rgba(124, 58, 237, 0.1), 0 0 40px rgba(124, 58, 237, 0.04);
+  --glow-success: 0 0 15px rgba(5, 150, 105, 0.12), 0 0 40px rgba(5, 150, 105, 0.05);
+
+  --grid-line: rgba(0, 0, 0, 0.025);
+  --ambient-cyan: rgba(8, 145, 178, 0.04);
+  --ambient-purple: rgba(124, 58, 237, 0.03);
+
+  --panel-bg: rgba(255, 255, 255, 0.6);
+  --panel-border: rgba(0, 0, 0, 0.08);
+  --panel-hover-border: rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   TAILWIND THEME TOKENS
+   ============================================ */
 
 @theme inline {
   --color-background: var(--bg-primary);
@@ -35,28 +85,29 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  --color-cyber-bg: #0a0a0f;
-  --color-cyber-surface: #111119;
-  --color-cyber-elevated: #16161f;
-  --color-cyber-cyan: #00f0ff;
-  --color-cyber-purple: #a855f7;
-  --color-cyber-pink: #f472b6;
-  --color-cyber-success: #34d399;
-  --color-cyber-warning: #fbbf24;
-  --color-cyber-danger: #f87171;
-  --color-cyber-text: #f0f0f8;
-  --color-cyber-text-secondary: #9ca3af;
-  --color-cyber-text-muted: #6b7280;
+  --color-cyber-bg: var(--bg-primary);
+  --color-cyber-surface: var(--bg-secondary);
+  --color-cyber-elevated: var(--bg-elevated);
+  --color-cyber-cyan: var(--accent-cyan);
+  --color-cyber-purple: var(--accent-purple);
+  --color-cyber-pink: var(--accent-pink);
+  --color-cyber-success: var(--accent-success);
+  --color-cyber-warning: var(--accent-warning);
+  --color-cyber-danger: var(--accent-danger);
+  --color-cyber-text: var(--text-primary);
+  --color-cyber-text-secondary: var(--text-secondary);
+  --color-cyber-text-muted: var(--text-muted);
 }
 
 /* ============================================
-   BASE
+   BASE STYLES
    ============================================ */
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Grid background pattern */
@@ -65,8 +116,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(rgba(0, 240, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.015) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
   z-index: 0;
@@ -80,14 +131,26 @@ body::after {
   left: -10%;
   width: 120%;
   height: 100%;
-  background: radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse at 30% 0%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+  background: radial-gradient(ellipse at 50% 0%, var(--ambient-cyan) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 0%, var(--ambient-purple) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
 /* ============================================
-   CUSTOM KEYFRAMES (not available in Tailwind)
+   THEME-AWARE PANELS (used via Tailwind)
+   Replaces hardcoded bg-white/[0.03] etc.
+   ============================================ */
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* ============================================
+   CUSTOM KEYFRAMES
    ============================================ */
 
 @keyframes border-pulse {
@@ -120,7 +183,7 @@ body::after {
   100% { transform: translate(30px, -40px); }
 }
 
-/* Scanline overlay effect */
+/* Scanline overlay */
 .webcam-scanline {
   background: repeating-linear-gradient(
     0deg,
@@ -137,7 +200,7 @@ body::after {
 .corner-bracket-bl { border-bottom: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan); border-bottom-left-radius: 4px; }
 .corner-bracket-br { border-bottom: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan); border-bottom-right-radius: 4px; }
 
-/* Active letter tile border animation */
+/* Active letter ring */
 .letter-active-ring::before {
   content: "";
   position: absolute;
@@ -176,5 +239,5 @@ body::after {
    ============================================ */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

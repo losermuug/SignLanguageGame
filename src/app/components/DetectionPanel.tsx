@@ -17,7 +17,7 @@ export default function DetectionPanel({
   isCompleted,
 }: DetectionPanelProps) {
   return (
-    <div className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+    <div className="backdrop-blur-xl bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-2xl p-6">
       <h2 className="text-xs font-semibold uppercase tracking-widest text-cyber-text-muted mb-4">
         Current Sign
       </h2>

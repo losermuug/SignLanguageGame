@@ -56,7 +56,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
 
   return (
     <motion.div
-      className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5 overflow-hidden"
+      className="backdrop-blur-xl bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-2xl p-5 overflow-hidden"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -118,7 +118,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
         <AnimatePresence mode="wait">
           <motion.div
             key={upperLetter}
-            className="w-28 h-28 rounded-xl overflow-hidden border border-white/[0.06] bg-cyber-surface shrink-0 flex items-center justify-center"
+            className="w-28 h-28 rounded-xl overflow-hidden border border-[var(--panel-border)] bg-cyber-surface shrink-0 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}

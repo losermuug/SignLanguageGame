@@ -2,6 +2,7 @@
 
 import { Hand, Trophy, Zap, Sparkles } from "lucide-react";
 import DifficultySelector from "./DifficultySelector";
+import ThemeToggle from "./ThemeToggle";
 import type { Difficulty } from "../hooks/useGameState";
 
 interface HeaderProps {
@@ -20,7 +21,7 @@ export default function Header({
   onDifficultyChange,
 }: HeaderProps) {
   return (
-    <header className="w-full px-6 py-4 flex items-center justify-between border-b border-white/[0.06] backdrop-blur-md bg-cyber-bg/60">
+    <header className="w-full px-6 py-4 flex items-center justify-between border-b border-[var(--panel-border)] backdrop-blur-md bg-[var(--bg-glass)]">
       {/* Logo */}
       <div className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyber-cyan/20 to-cyber-purple/20 border border-cyber-cyan/20 flex items-center justify-center">
@@ -41,20 +42,25 @@ export default function Header({
         <DifficultySelector difficulty={difficulty} onChange={onDifficultyChange} />
       </div>
 
-      {/* Stats */}
-      <div className="flex items-center gap-5">
-        <div className="flex items-center gap-2 text-sm" title="Score">
-          <Trophy className="w-4 h-4 text-cyber-warning" />
-          <span className="font-mono font-bold text-cyber-text">{score}</span>
+      {/* Stats + Theme Toggle */}
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2 text-sm" title="Score">
+            <Trophy className="w-4 h-4 text-cyber-warning" />
+            <span className="font-mono font-bold text-cyber-text">{score}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm" title="Streak">
+            <Zap className="w-4 h-4 text-cyber-cyan" />
+            <span className="font-mono font-bold text-cyber-text">{streak}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm" title="Words completed">
+            <Sparkles className="w-4 h-4 text-cyber-purple" />
+            <span className="font-mono font-bold text-cyber-text">{wordsCompleted}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2 text-sm" title="Streak">
-          <Zap className="w-4 h-4 text-cyber-cyan" />
-          <span className="font-mono font-bold text-cyber-text">{streak}</span>
-        </div>
-        <div className="flex items-center gap-2 text-sm" title="Words completed">
-          <Sparkles className="w-4 h-4 text-cyber-purple" />
-          <span className="font-mono font-bold text-cyber-text">{wordsCompleted}</span>
-        </div>
+
+        {/* Theme toggle */}
+        <ThemeToggle />
       </div>
     </header>
   );

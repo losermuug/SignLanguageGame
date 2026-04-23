@@ -37,7 +37,7 @@ export default function StatsPanel({
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl bg-[var(--panel-bg)] border border-[var(--panel-border)]"
         >
           <stat.icon className={`w-4 h-4 ${stat.color}`} />
           <span className="text-base font-bold font-mono text-cyber-text">

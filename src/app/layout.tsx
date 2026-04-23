@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ThemeProvider from "./components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SignLang — Sign Language Alphabet Game",
+  title: "SignLang — Дохионы Хэлний Цагаан Толгой Тоглоом",
   description:
-    "Master the sign language alphabet through an interactive AI-powered spelling game. Practice signing letters with real-time webcam detection.",
+    "AI-д суурилсан интерактив тоглоомоор дохионы хэлний цагаан толгойг сурч, вэбкамераар бодит цагийн таних системтэй дадлага хийгээрэй.",
 };
 
 export default function RootLayout({
@@ -25,10 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="mn"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

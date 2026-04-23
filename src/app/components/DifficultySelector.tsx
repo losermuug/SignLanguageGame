@@ -15,7 +15,7 @@ const levels: { key: Difficulty; label: string; color: string; activeColor: stri
 
 export default function DifficultySelector({ difficulty, onChange }: DifficultySelectorProps) {
   return (
-    <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+    <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[var(--panel-bg)] border border-[var(--panel-border)]">
       {levels.map((lvl) => (
         <button
           key={lvl.key}

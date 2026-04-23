@@ -23,7 +23,7 @@ export default function CameraSection({ isCompleted, onSimulate }: CameraSection
         </div>
         <button
           onClick={() => setCameraOn((v) => !v)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border border-white/[0.08] bg-cyber-elevated text-cyber-text-secondary hover:border-white/[0.15] hover:text-cyber-text transition-all duration-300 cursor-pointer"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--panel-border)] bg-cyber-elevated text-cyber-text-secondary hover:border-[var(--panel-hover-border)] hover:text-cyber-text transition-all duration-300 cursor-pointer"
         >
           {cameraOn ? (
             <><CameraOff className="w-3.5 h-3.5" /> Turn Off</>
