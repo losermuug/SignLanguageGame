@@ -4,15 +4,20 @@ import { useMemo } from "react";
 
 const COLORS = ["#00f0ff", "#a855f7", "#f472b6", "#34d399", "#fbbf24"];
 
+function seededUnit(seed: number) {
+  const x = Math.sin(seed * 999) * 10000;
+  return x - Math.floor(x);
+}
+
 export default function Confetti() {
   const pieces = useMemo(() => {
     return Array.from({ length: 40 }, (_, i) => ({
       id: i,
-      left: `${Math.random() * 100}%`,
-      delay: `${Math.random() * 2}s`,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      size: 6 + Math.random() * 6,
-      rotation: Math.random() * 360,
+      left: `${seededUnit(i + 1) * 100}%`,
+      delay: `${seededUnit(i + 41) * 2}s`,
+      color: COLORS[Math.floor(seededUnit(i + 81) * COLORS.length)],
+      size: 6 + seededUnit(i + 121) * 6,
+      rotation: seededUnit(i + 161) * 360,
     }));
   }, []);
 

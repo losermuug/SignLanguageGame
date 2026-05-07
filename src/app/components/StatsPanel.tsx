@@ -26,10 +26,10 @@ export default function StatsPanel({
   const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
 
   const stats = [
-    { icon: Clock, label: "Time", value: formatTime(timer), color: "text-cyber-cyan" },
-    { icon: Target, label: "Accuracy", value: `${accuracy}%`, color: "text-cyber-success" },
-    { icon: TrendingUp, label: "Best Streak", value: `${bestStreak}`, color: "text-cyber-warning" },
-    { icon: Trophy, label: "Words", value: `${wordsCompleted}`, color: "text-cyber-purple" },
+    { icon: Clock, label: "Хугацаа", value: formatTime(timer), color: "text-cyber-cyan" },
+    { icon: Target, label: "Оновчлол", value: `${accuracy}%`, color: "text-cyber-success" },
+    { icon: TrendingUp, label: "Хамгийн их", value: `${bestStreak}`, color: "text-cyber-warning" },
+    { icon: Trophy, label: "Үгс", value: `${wordsCompleted}`, color: "text-cyber-purple" },
   ];
 
   return (

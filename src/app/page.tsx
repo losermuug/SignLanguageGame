@@ -47,7 +47,7 @@ export default function GamePage() {
           <div className="flex flex-col gap-5">
             <CameraSection
               isCompleted={game.isCompleted}
-              onSimulate={game.simulateDetection}
+              onDetection={game.advanceLetter}
             />
 
             {/* Stats row */}

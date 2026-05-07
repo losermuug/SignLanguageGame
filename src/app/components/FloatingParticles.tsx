@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 interface Particle {
   id: number;
@@ -12,24 +12,23 @@ interface Particle {
   opacity: number;
 }
 
+function seededUnit(seed: number) {
+  const x = Math.sin(seed * 997) * 10000;
+  return x - Math.floor(x);
+}
+
 export default function FloatingParticles() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
-
   const particles = useMemo<Particle[]>(() => {
     return Array.from({ length: 20 }, (_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 2 + Math.random() * 3,
-      duration: 15 + Math.random() * 20,
-      delay: Math.random() * 10,
-      opacity: 0.1 + Math.random() * 0.2,
+      x: seededUnit(i + 1) * 100,
+      y: seededUnit(i + 21) * 100,
+      size: 2 + seededUnit(i + 41) * 3,
+      duration: 15 + seededUnit(i + 61) * 20,
+      delay: seededUnit(i + 81) * 10,
+      opacity: 0.1 + seededUnit(i + 101) * 0.2,
     }));
   }, []);
-
-  if (!mounted) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden">

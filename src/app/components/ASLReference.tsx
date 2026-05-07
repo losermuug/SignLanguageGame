@@ -47,12 +47,14 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
   const upperLetter = letter.toUpperCase();
   const hint = ASL_HINTS[upperLetter] || "No hint available";
   const hasImage = LETTERS_WITH_IMAGES.has(upperLetter);
-  const [imgError, setImgError] = useState(false);
+  const [failedImageLetter, setFailedImageLetter] = useState<string | null>(null);
 
   const letterColor = useMemo(() => {
     const hue = ((upperLetter.charCodeAt(0) - 65) / 26) * 360;
     return `hsl(${hue}, 70%, 60%)`;
   }, [upperLetter]);
+
+  if (!letter) return null;
 
   return (
     <motion.div
@@ -124,7 +126,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
           >
-            {hasImage && !imgError ? (
+            {hasImage && failedImageLetter !== upperLetter ? (
               <Image
                 src={`/asl/${upperLetter.toLowerCase()}.png`}
                 alt={`ASL sign for letter ${upperLetter}`}
@@ -132,7 +134,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
                 height={112}
                 className="w-full h-full object-cover"
                 priority
-                onError={() => setImgError(true)}
+                onError={() => setFailedImageLetter(upperLetter)}
               />
             ) : (
               /* Fallback: styled letter with hand emoji */

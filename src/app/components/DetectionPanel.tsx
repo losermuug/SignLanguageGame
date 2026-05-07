@@ -56,7 +56,7 @@ export default function DetectionPanel({
       {/* Target hint */}
       {!isCompleted && (
         <div className="mt-4 flex items-center justify-center gap-2 text-sm text-cyber-text-secondary">
-          <span>Sign the letter</span>
+          <span>Дохих үсэг:</span>
           <span className="font-mono font-bold text-lg text-cyber-cyan px-2 py-0.5 rounded-lg bg-cyber-cyan/10 border border-cyber-cyan/20">
             {activeWord[charIndex]}
           </span>

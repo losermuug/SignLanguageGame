@@ -35,7 +35,7 @@ const WebcamView = forwardRef<WebcamViewHandle, WebcamViewProps>(
           <Webcam
             ref={webcamRef}
             audio={false}
-            mirrored={true}
+            mirrored={false}
             videoConstraints={videoConstraints}
             className="w-full h-full object-cover block"
           />
@@ -63,7 +63,7 @@ const WebcamView = forwardRef<WebcamViewHandle, WebcamViewProps>(
           </div>
         )}
 
-        {/* Canvas overlay for MediaPipe hand landmarks */}
+        {/* Canvas overlay for hand landmarks */}
         <canvas
           ref={canvasRef}
           width={640}

@@ -21,10 +21,10 @@ export default function WordDisplay({
       <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-cyber-text-muted mb-1">
-            Target Word
+            Дохих үг
           </h2>
           <p className="text-sm text-cyber-text-secondary">
-            Sign each letter in order
+            Үсгийг дарааллаар нь дохиорой
           </p>
         </div>
 

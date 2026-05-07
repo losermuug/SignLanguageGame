@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Flame, Zap } from "lucide-react";
+import { Flame } from "lucide-react";
 
 interface ComboDisplayProps {
   streak: number;

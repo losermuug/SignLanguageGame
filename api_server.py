@@ -1,0 +1,324 @@
+"""
+Sign Language Detection API Server.
+
+Uses the EXACT same pipeline as Gesture-Recognition/run.py:
+  HandTrackerNMS (palm detection + hand landmark) → 9 Euclidean distances → GaussianNB
+
+Accepts base64 webcam frames via POST /predict, returns detected letter.
+"""
+import os
+import sys
+import csv
+import base64
+import io
+import warnings
+
+import numpy as np
+import cv2
+from PIL import Image
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from scipy.spatial import distance as dist
+import joblib
+
+# ── Use ai_edge_litert instead of tf.lite ──
+import ai_edge_litert.interpreter as tfl
+
+app = Flask(__name__)
+CORS(app)
+
+# ── Paths ──
+BASE = os.path.join(os.path.dirname(__file__), 'public', 'Gesture-Recognition')
+PALM_MODEL = os.path.join(BASE, 'models', 'palm_detection_without_custom_op.tflite')
+LANDMARK_MODEL = os.path.join(BASE, 'models', 'hand_landmark.tflite')
+ANCHORS_PATH = os.path.join(BASE, 'models', 'anchors.csv')
+CLF_PATH = os.path.join(BASE, 'models', 'gesture_clf.pkl')
+
+# ── Class labels ──
+CLASSES = {
+    0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F',
+    6: 'G', 7: 'H', 8: 'I', 9: 'K', 10: 'L', 11: 'M',
+    12: 'N', 13: 'O', 14: 'P', 15: 'Q', 16: 'R', 17: 'S',
+    18: 'T', 19: 'U', 20: 'V', 21: 'W', 22: 'X', 23: 'Y',
+}
+
+
+# ══════════════════════════════════════════════
+#  NMS (from Gesture-Recognition/src/)
+# ══════════════════════════════════════════════
+def non_max_suppression_fast(boxes, probs, overlap_thresh=0.5):
+    if len(boxes) == 0:
+        return []
+    if boxes.dtype.kind == "i":
+        boxes = boxes.astype("float")
+
+    pick = []
+    x1 = boxes[:, 0] - boxes[:, 2] / 2
+    y1 = boxes[:, 1] - boxes[:, 3] / 2
+    x2 = boxes[:, 0] + boxes[:, 2] / 2
+    y2 = boxes[:, 1] + boxes[:, 3] / 2
+
+    area = (x2 - x1 + 1) * (y2 - y1 + 1)
+    idxs = np.argsort(probs)
+
+    while len(idxs) > 0:
+        last = len(idxs) - 1
+        i = idxs[last]
+        pick.append(i)
+
+        xx1 = np.maximum(x1[i], x1[idxs[:last]])
+        yy1 = np.maximum(y1[i], y1[idxs[:last]])
+        xx2 = np.minimum(x2[i], x2[idxs[:last]])
+        yy2 = np.minimum(y2[i], y2[idxs[:last]])
+
+        w = np.maximum(0, xx2 - xx1 + 1)
+        h = np.maximum(0, yy2 - yy1 + 1)
+        overlap = (w * h) / area[idxs[:last]]
+
+        idxs = np.delete(idxs, np.concatenate(([last],
+            np.where(overlap > overlap_thresh)[0])))
+
+    return pick
+
+
+# ══════════════════════════════════════════════
+#  Hand Tracker (from Gesture-Recognition/src/)
+# ══════════════════════════════════════════════
+class HandTracker:
+    def __init__(self, palm_model, joint_model, anchors_path,
+                 box_enlarge=1.3, box_shift=0.2):
+        self.box_shift = box_shift
+        self.box_enlarge = box_enlarge
+
+        self.interp_palm = tfl.Interpreter(palm_model)
+        self.interp_palm.allocate_tensors()
+        self.interp_joint = tfl.Interpreter(joint_model)
+        self.interp_joint.allocate_tensors()
+
+        with open(anchors_path, "r") as csv_f:
+            self.anchors = np.r_[
+                [x for x in csv.reader(csv_f, quoting=csv.QUOTE_NONNUMERIC)]
+            ]
+
+        output_details = self.interp_palm.get_output_details()
+        input_details = self.interp_palm.get_input_details()
+
+        self.in_idx = input_details[0]['index']
+        self.out_reg_idx = output_details[0]['index']
+        self.out_clf_idx = output_details[1]['index']
+
+        self.in_idx_joint = self.interp_joint.get_input_details()[0]['index']
+        self.out_idx_joint = self.interp_joint.get_output_details()[0]['index']
+
+        self.R90 = np.r_[[[0, 1], [-1, 0]]]
+        self._target_triangle = np.float32([[128, 128], [128, 0], [0, 128]])
+        self._target_box = np.float32([[0,0,1],[256,0,1],[256,256,1],[0,256,1]])
+
+    def _get_triangle(self, kp0, kp2, dist=1):
+        dir_v = kp2 - kp0
+        dir_v /= np.linalg.norm(dir_v)
+        dir_v_r = dir_v @ self.R90.T
+        return np.float32([kp2, kp2+dir_v*dist, kp2+dir_v_r*dist])
+
+    @staticmethod
+    def _triangle_to_bbox(source):
+        bbox = np.c_[
+            [source[2]-source[0]+source[1]],
+            [source[1]+source[0]-source[2]],
+            [3*source[0]-source[1]-source[2]],
+            [source[2]-source[1]+source[0]],
+        ].reshape(-1, 2)
+        return bbox
+
+    @staticmethod
+    def _im_normalize(img):
+        return np.ascontiguousarray(2*((img/255)-0.5).astype('float32'))
+
+    @staticmethod
+    def _sigm(x):
+        return 1 / (1 + np.exp(-x))
+
+    @staticmethod
+    def _pad1(x):
+        return np.pad(x, ((0,0),(0,1)), constant_values=1, mode='constant')
+
+    def predict_joints(self, img_norm):
+        self.interp_joint.set_tensor(self.in_idx_joint, img_norm.reshape(1,256,256,3))
+        self.interp_joint.invoke()
+        joints = self.interp_joint.get_tensor(self.out_idx_joint)
+        return joints.reshape(-1, 2)
+
+    def detect_hand(self, img_norm):
+        assert -1 <= img_norm.min() and img_norm.max() <= 1
+        assert img_norm.shape == (256, 256, 3)
+
+        self.interp_palm.set_tensor(self.in_idx, img_norm[None])
+        self.interp_palm.invoke()
+
+        out_reg = self.interp_palm.get_tensor(self.out_reg_idx)[0]
+        out_clf = self.interp_palm.get_tensor(self.out_clf_idx)[0, :, 0]
+
+        probabilities = self._sigm(out_clf)
+        detecion_mask = probabilities > 0.7
+        candidate_detect = out_reg[detecion_mask]
+        candidate_anchors = self.anchors[detecion_mask]
+        probabilities = probabilities[detecion_mask]
+
+        if candidate_detect.shape[0] == 0:
+            return None, None
+
+        moved_candidate_detect = candidate_detect.copy()
+        moved_candidate_detect[:, :2] = candidate_detect[:, :2] + (candidate_anchors[:, :2] * 256)
+        box_ids = non_max_suppression_fast(moved_candidate_detect[:, :4], probabilities)
+        box_ids = box_ids[0]
+
+        dx, dy, w, h = candidate_detect[box_ids, :4]
+        center_wo_offst = candidate_anchors[box_ids, :2] * 256
+        keypoints = center_wo_offst + candidate_detect[box_ids, 4:].reshape(-1, 2)
+        side = max(w, h) * self.box_enlarge
+
+        source = self._get_triangle(keypoints[0], keypoints[2], side)
+        source -= (keypoints[0] - keypoints[2]) * self.box_shift
+        return source, keypoints
+
+    def preprocess_img(self, img):
+        shape = np.r_[img.shape]
+        pad = (shape.max() - shape[:2]).astype('uint32') // 2
+        img_pad = np.pad(img, ((pad[0],pad[0]),(pad[1],pad[1]),(0,0)), mode='constant')
+        img_small = cv2.resize(img_pad, (256, 256))
+        img_small = np.ascontiguousarray(img_small)
+        img_norm = self._im_normalize(img_small)
+        return img_pad, img_norm, pad
+
+    def __call__(self, img):
+        img_pad, img_norm, pad = self.preprocess_img(img)
+        source, keypoints = self.detect_hand(img_norm)
+
+        if source is None:
+            return None, None, None
+
+        scale = np.max(img.shape[:2]) / 256.0
+        Mtr = cv2.getAffineTransform(np.float32(source * scale), self._target_triangle)
+        img_landmark = cv2.warpAffine(self._im_normalize(img_pad), Mtr, (256, 256))
+        joints = self.predict_joints(img_landmark)
+
+        Mtr = self._pad1(Mtr.T).T
+        Mtr[2, :2] = 0
+        Minv = np.linalg.inv(Mtr)
+        kp_orig = (self._pad1(joints) @ Minv.T)[:, :2]
+        box_orig = (self._target_box @ Minv.T)[:, :2]
+        kp_orig -= pad[::-1]
+        box_orig -= pad[::-1]
+
+        return kp_orig, box_orig, joints
+
+
+# ══════════════════════════════════════════════
+#  Distance calculation (from extra.py)
+# ══════════════════════════════════════════════
+def calc_distances(joints):
+    return [
+        dist.euclidean(joints[20], joints[0]),
+        dist.euclidean(joints[16], joints[0]),
+        dist.euclidean(joints[12], joints[0]),
+        dist.euclidean(joints[8],  joints[0]),
+        dist.euclidean(joints[4],  joints[0]),
+        dist.euclidean(joints[20], joints[16]),
+        dist.euclidean(joints[16], joints[12]),
+        dist.euclidean(joints[12], joints[8]),
+        dist.euclidean(joints[8],  joints[4]),
+    ]
+
+
+# ══════════════════════════════════════════════
+#  Initialize
+# ══════════════════════════════════════════════
+print("Loading hand tracker models...")
+detector = HandTracker(PALM_MODEL, LANDMARK_MODEL, ANCHORS_PATH,
+                       box_shift=0.2, box_enlarge=1.3)
+print("Loading gesture classifier...")
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    gesture_clf = joblib.load(CLF_PATH)
+
+# gesture_clf.pkl was trained with an older scikit-learn GaussianNB.
+# Newer scikit-learn versions renamed sigma_ to var_, so predictions fail
+# unless we expose the modern attribute name after loading the pickle.
+if not hasattr(gesture_clf, 'var_') and hasattr(gesture_clf, 'sigma_'):
+    gesture_clf.var_ = gesture_clf.sigma_
+print("All models loaded.")
+
+
+# ══════════════════════════════════════════════
+#  API Endpoints
+# ══════════════════════════════════════════════
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        data = request.get_json()
+        if not data or 'image' not in data:
+            return jsonify({'error': 'No image'}), 400
+
+        # Decode base64 image
+        img_data = data['image']
+        if ',' in img_data:
+            img_data = img_data.split(',')[1]
+
+        img_bytes = base64.b64decode(img_data)
+        img = Image.open(io.BytesIO(img_bytes))
+        img_rgb = np.array(img.convert('RGB'))
+
+        # Run the EXACT same pipeline as run.py
+        points, bboxes, joints = detector(img_rgb)
+
+        if joints is None:
+            return jsonify({'letter': None, 'confidence': 0, 'hand_detected': False})
+
+        # Calculate 9 distances (same as extra.py)
+        distances = calc_distances(joints)
+        distances_arr = np.expand_dims(distances, axis=0)
+
+        # Predict with the trained classifier
+        pred_class = gesture_clf.predict(distances_arr)[0]
+        letter = CLASSES[pred_class]
+
+        # Get probabilities if available
+        confidence = 1.0
+        top5 = [{'label': letter, 'confidence': 1.0}]
+        if hasattr(gesture_clf, 'predict_proba'):
+            probs = gesture_clf.predict_proba(distances_arr)[0]
+            top_indices = np.argsort(probs)[::-1][:5]
+            top5 = [
+                {'label': CLASSES[gesture_clf.classes_[i]], 'confidence': float(probs[i])}
+                for i in top_indices
+            ]
+            confidence = float(probs[top_indices[0]])
+
+        # Get landmark points for drawing (in original image coords)
+        landmarks = []
+        h, w = img_rgb.shape[:2]
+        for pt in points:
+            landmarks.append({'x': float(pt[0]/w), 'y': float(pt[1]/h)})
+
+        return jsonify({
+            'letter': letter,
+            'confidence': confidence,
+            'hand_detected': True,
+            'top5': top5,
+            'landmarks': landmarks,
+        })
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'ok', 'model': 'gesture_recognition_pipeline'})
+
+
+if __name__ == '__main__':
+    print("Starting Sign Language API on http://localhost:5001")
+    app.run(host='0.0.0.0', port=5001, debug=False)
