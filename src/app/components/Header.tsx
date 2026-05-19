@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Hand, Trophy, Zap } from "lucide-react";
 import DifficultySelector from "./DifficultySelector";
 import ThemeToggle from "./ThemeToggle";
@@ -21,14 +22,14 @@ export default function Header({
   onDifficultyChange,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 w-full px-4 py-3 lg:px-8 flex items-center justify-between border-b border-[var(--panel-border)] bg-[var(--bg-glass)] backdrop-blur-xl">
+    <header className="sticky top-0 z-30 w-full px-4 py-3 lg:px-8 flex items-center justify-between border-b border-[var(--panel-border)] bg-[var(--bg-glass)] backdrop-blur-2xl">
       {/* Logo */}
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-10 h-10 rounded-xl border border-cyber-cyan/25 bg-cyber-cyan/10 flex items-center justify-center shadow-[0_0_28px_rgba(45,212,191,0.16)]">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyber-cyan/20 to-cyber-purple/10 border border-cyber-cyan/25 flex items-center justify-center shadow-[var(--glow-cyan)]">
           <Hand className="w-5 h-5 text-cyber-cyan" />
         </div>
         <div>
-          <h1 className="text-lg font-semibold tracking-tight text-cyber-text leading-tight">
+          <h1 className="text-lg font-bold tracking-tight leading-tight gradient-text-animated">
             Дохио Тоглоом
           </h1>
           <p className="text-xs text-cyber-text-secondary">
@@ -43,17 +44,31 @@ export default function Header({
       </div>
 
       {/* Stats + Theme Toggle */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
         <div className="hidden sm:flex items-center gap-2">
-          <div className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm" title="Оноо">
+          <motion.div
+            key={score}
+            className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-[var(--panel-bg)] backdrop-blur-xl px-3.5 py-1.5 text-sm"
+            title="Оноо"
+            initial={{ scale: 1 }}
+            animate={{ scale: [1, 1.08, 1] }}
+            transition={{ duration: 0.3 }}
+          >
             <Trophy className="w-4 h-4 text-cyber-warning" />
-            <span className="font-mono font-semibold text-cyber-text">{score}</span>
-          </div>
-          <div className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm" title="Дараалал">
+            <span className="font-mono font-bold text-cyber-text tabular-nums">{score}</span>
+          </motion.div>
+          <motion.div
+            key={`streak-${streak}`}
+            className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-[var(--panel-bg)] backdrop-blur-xl px-3.5 py-1.5 text-sm"
+            title="Дараалал"
+            initial={{ scale: 1 }}
+            animate={{ scale: [1, 1.08, 1] }}
+            transition={{ duration: 0.3 }}
+          >
             <Zap className="w-4 h-4 text-cyber-cyan" />
-            <span className="font-mono font-semibold text-cyber-text">{streak}</span>
-          </div>
-          <span className="rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm text-cyber-text-secondary">{wordsCompleted} үг</span>
+            <span className="font-mono font-bold text-cyber-text tabular-nums">{streak}</span>
+          </motion.div>
+          <span className="rounded-full border border-[var(--panel-border)] bg-[var(--panel-bg)] backdrop-blur-xl px-3.5 py-1.5 text-sm text-cyber-text-secondary font-medium tabular-nums">{wordsCompleted} үг</span>
         </div>
 
         {/* Theme toggle */}

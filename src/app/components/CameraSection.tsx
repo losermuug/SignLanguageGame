@@ -168,17 +168,17 @@ export default function CameraSection({
       {/* Camera toggle header */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-cyber-cyan/25 bg-cyber-cyan/10">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyber-cyan/15 to-cyber-purple/8 border border-cyber-cyan/20">
             <Camera className="h-5 w-5 text-cyber-cyan" />
           </div>
           <div className="min-w-0">
             <h2 className="text-sm font-semibold text-cyber-text">Камерын дадлага</h2>
-            <p className="text-xs text-cyber-text-muted">Зорилтот үсэг: <span className="font-mono text-cyber-text">{targetLetter || "-"}</span></p>
+            <p className="text-xs text-cyber-text-muted">Зорилтот үсэг: <span className="font-mono font-bold text-cyber-cyan">{targetLetter || "-"}</span></p>
           </div>
         </div>
         <button
           onClick={() => setCameraOn((v) => !v)}
-          className="flex items-center gap-2 rounded-xl border border-[var(--panel-border)] bg-cyber-elevated px-3 py-2 text-xs font-semibold text-cyber-text-secondary transition-colors hover:border-[var(--panel-hover-border)] hover:text-cyber-text cursor-pointer"
+          className="flex items-center gap-2 rounded-xl border border-[var(--panel-border)] bg-[var(--panel-bg)] backdrop-blur-xl px-3 py-2 text-xs font-semibold text-cyber-text-secondary transition-all duration-300 hover:border-[var(--panel-hover-border)] hover:text-cyber-text cursor-pointer"
         >
           {cameraOn ? (
             <><CameraOff className="w-3.5 h-3.5" /> Унтраах</>
@@ -191,7 +191,8 @@ export default function CameraSection({
       {/* Webcam */}
       <WebcamView ref={webcamRef} isActive={cameraOn} />
 
-      <div className="flex items-center justify-between gap-3 rounded-xl border border-[var(--panel-border)] bg-cyber-elevated px-3 py-3 text-xs text-cyber-text-secondary">
+      {/* Model status */}
+      <div className="flex items-center justify-between gap-3 rounded-xl border border-[var(--panel-border)] bg-gradient-to-r from-[var(--bg-elevated)] to-[var(--bg-secondary)] px-3.5 py-3 text-xs text-cyber-text-secondary">
         <span className="flex items-center gap-2 font-semibold">
           <Radio className="h-3.5 w-3.5 text-cyber-cyan" />
           Модель
@@ -216,7 +217,7 @@ export default function CameraSection({
       <button
         onClick={onSimulate}
         disabled={isCompleted}
-        className="w-full rounded-xl border border-cyber-cyan/25 bg-cyber-cyan/10 py-3 text-sm font-semibold text-cyber-text transition-colors hover:border-cyber-cyan/45 hover:bg-cyber-cyan/15 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        className="btn-shine w-full rounded-xl bg-gradient-to-r from-cyber-cyan/12 to-cyber-purple/8 border border-cyber-cyan/20 py-3 text-sm font-semibold text-cyber-text transition-all duration-300 hover:from-cyber-cyan/20 hover:to-cyber-purple/12 hover:border-cyber-cyan/35 hover:shadow-[var(--glow-cyan)] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
       >
         <span className="flex items-center justify-center gap-2">
           <Target className="w-4 h-4" />

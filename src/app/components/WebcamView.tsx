@@ -80,7 +80,7 @@ const WebcamView = forwardRef<WebcamViewHandle, WebcamViewProps>(
         {/* Live indicator */}
         {isActive && (
           <div className="absolute top-4 left-4 z-[5] flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 backdrop-blur-sm">
-            <div className="w-1.5 h-1.5 rounded-full bg-cyber-success" />
+            <div className="w-1.5 h-1.5 rounded-full bg-cyber-success live-dot" />
             <span className="text-[0.65rem] font-medium uppercase tracking-wide text-white/85">
               Шууд
             </span>
