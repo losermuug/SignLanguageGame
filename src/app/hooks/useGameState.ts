@@ -6,9 +6,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
    WORD BANKS BY DIFFICULTY
    ============================================ */
 const WORDS: Record<string, string[]> = {
-  easy: ["HI", "CAT", "DOG", "SUN", "CUP", "RED", "BOX", "PEN"],
-  medium: ["HELLO", "APPLE", "WORLD", "LEARN", "GAME", "SIGN", "HAND", "CODE"],
-  hard: ["GESTURE", "LANGUAGE", "ALPHABET", "PRACTICE", "PREDICT", "CAPTURE"],
+  easy: ["CAT", "DOG", "RED", "BOX", "PEN", "HAT", "CAR", "BED"],
+  medium: ["HELLO", "APPLE", "WORLD", "LEARN", "GAME", "HAND", "CODE", "TEAM"],
+  hard: ["ALPHABET", "MARKER", "CAMERA", "LETTER", "ORANGE", "TEACHER"],
 };
 
 export type Difficulty = "easy" | "medium" | "hard";
@@ -49,6 +49,7 @@ export interface GameActions {
   nextWord: () => void;
   resetGame: () => void;
   simulateDetection: () => void;
+  handlePrediction: (predicted: string, confidence?: number) => void;
   setDifficulty: (d: Difficulty) => void;
   dismissToast: (id: number) => void;
 }
@@ -140,9 +141,9 @@ export function useGameState(): GameState & GameActions {
         setScore((s) => s + points);
 
         // Streak milestones
-        if (newStreak === 5) addToast("🔥 5 Streak! Keep going!", "fire");
-        if (newStreak === 10) addToast("⚡ 10 Streak! Unstoppable!", "fire");
-        if (newStreak === 15) addToast("🌟 15 Streak! Legendary!", "fire");
+        if (newStreak === 5) addToast("🔥 5 дарааллаа! Үргэлжлүүлээрэй!", "fire");
+        if (newStreak === 10) addToast("⚡ 10 дарааллаа! Маш сайн!", "fire");
+        if (newStreak === 15) addToast("🌟 15 дарааллаа! Гайхалтай!", "fire");
 
         if (charIndex + 1 >= activeWord.length) {
           // Word completed!
@@ -152,15 +153,15 @@ export function useGameState(): GameState & GameActions {
 
           // Speed bonus: under 10s = +100, under 20s = +50, under 30s = +25
           let speedBonus = 0;
-          if (timer < 10) { speedBonus = 100; addToast("⚡ Speed Demon! +100", "success"); }
-          else if (timer < 20) { speedBonus = 50; addToast("🚀 Quick! +50", "success"); }
-          else if (timer < 30) { speedBonus = 25; addToast("✨ Nice pace! +25", "info"); }
+          if (timer < 10) { speedBonus = 100; addToast("⚡ Маш хурдан! +100", "success"); }
+          else if (timer < 20) { speedBonus = 50; addToast("🚀 Хурдан байлаа! +50", "success"); }
+          else if (timer < 30) { speedBonus = 25; addToast("✨ Сайн хэмнэл! +25", "info"); }
 
           // Difficulty bonus
           const diffBonus = difficulty === "hard" ? 100 : difficulty === "medium" ? 50 : 25;
 
           setScore((s) => s + 50 + speedBonus + diffBonus);
-          addToast(`🏆 Word Complete! +${50 + speedBonus + diffBonus}`, "success");
+          addToast(`🏆 Үг дууслаа! +${50 + speedBonus + diffBonus}`, "success");
 
           setTimeout(() => setShowConfetti(false), 3000);
         } else {
@@ -170,7 +171,7 @@ export function useGameState(): GameState & GameActions {
         setDetectedLetter(predicted.toUpperCase());
         setStreak(0);
         setComboMultiplier(1);
-        if (streak >= 3) addToast("💔 Streak lost!", "info");
+        if (streak >= 3) addToast("💔 Дараалал тасарлаа!", "info");
       }
     },
     [charIndex, activeWord, isCompleted, completedLetters, streak, bestStreak, comboMultiplier, timer, difficulty, addToast]
@@ -193,6 +194,16 @@ export function useGameState(): GameState & GameActions {
     setTimer(0);
   }, [activeWord]);
 
+  const handlePrediction = useCallback((predicted: string, confidence = 1) => {
+    const normalized = predicted.toUpperCase();
+    if (!normalized || confidence < 0.4) return;
+
+    setDetectedLetter(normalized);
+    if (/^[A-Z]$/.test(normalized)) {
+      advanceLetter(normalized);
+    }
+  }, [advanceLetter]);
+
   const simulateDetection = useCallback(() => {
     if (isCompleted) return;
     advanceLetter(activeWord[charIndex]);
@@ -211,7 +222,7 @@ export function useGameState(): GameState & GameActions {
     score, streak, bestStreak, completedLetters,
     showConfetti, wordsCompleted, difficulty, timer,
     totalCorrect, totalAttempts, toasts, comboMultiplier,
-    advanceLetter, nextWord, resetGame, simulateDetection,
+    advanceLetter, nextWord, resetGame, simulateDetection, handlePrediction,
     setDifficulty, dismissToast,
   };
 }

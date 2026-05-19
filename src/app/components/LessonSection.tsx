@@ -14,21 +14,21 @@ type Lesson = {
 const LESSONS: Lesson[] = [
   {
     id: "alphabet",
-    title: "Alphabet",
-    subtitle: "Learn each sign one letter at a time",
-    hint: "Start with the core hand shapes and finger positions.",
+    title: "Цагаан толгой",
+    subtitle: "Үсэг бүрийн дохиог нэг нэгээр нь сур",
+    hint: "Гарын үндсэн хэлбэр, хурууны байрлалаас эхлээрэй.",
   },
   {
     id: "words",
-    title: "Words",
-    subtitle: "Practice short everyday words",
-    hint: "Combine letters into simple, memorable practice sets.",
+    title: "Үг",
+    subtitle: "Богино өдөр тутмын үгсээр дадлага хий",
+    hint: "Үсгүүдийг энгийн, тогтооход амар үг болгон холбоорой.",
   },
   {
     id: "phrases",
-    title: "Phrases",
-    subtitle: "Build confidence with full expressions",
-    hint: "Move from isolated signs to natural communication flow.",
+    title: "Өгүүлбэр",
+    subtitle: "Бүтэн илэрхийллээр өөртөө итгэлтэй бол",
+    hint: "Тусдаа дохионоос байгалийн харилцааны урсгал руу шилжинэ.",
   },
 ];
 
@@ -45,10 +45,10 @@ export default function LessonSection() {
       <div className="flex items-center justify-between gap-3 mb-4">
         <div>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-cyber-text-muted">
-            Lesson Path
+            Хичээлийн зам
           </h2>
           <p className="text-sm text-cyber-text-secondary mt-1">
-            Choose a lightweight practice set to focus on.
+            Дадлага хийх хэсгээ сонгоно уу.
           </p>
         </div>
         <div className="w-10 h-10 rounded-xl bg-cyber-cyan/10 border border-cyber-cyan/20 flex items-center justify-center shrink-0">
@@ -109,7 +109,7 @@ export default function LessonSection() {
                           : "text-cyber-text-muted group-hover:text-cyber-text-secondary"
                       }`}
                     >
-                      Open
+                      Нээх
                       <ChevronRight className="w-3 h-3" />
                     </span>
                   </div>

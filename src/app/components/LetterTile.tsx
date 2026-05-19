@@ -25,21 +25,19 @@ export default function LetterTile({
       transition={{ delay: index * 0.06, duration: 0.4 }}
     >
       <motion.div
-        className={`relative flex items-center justify-center w-14 h-16 rounded-2xl text-2xl font-bold font-mono uppercase border-2 transition-all duration-300
+        className={`relative flex h-14 w-12 items-center justify-center rounded-xl border text-xl font-semibold font-mono uppercase transition-all
           ${isDone
-            ? "text-cyber-success border-cyber-success/30 bg-cyber-success/[0.08]"
+            ? "text-cyber-success border-cyber-success/35 bg-cyber-success/[0.1]"
             : isActive
-              ? "text-cyber-cyan border-cyber-cyan/40 bg-cyber-cyan/[0.08] scale-105 letter-active-ring"
-              : "text-cyber-text-muted border-[var(--panel-border)] bg-cyber-surface"
+              ? "text-cyber-text border-cyber-cyan/55 bg-cyber-cyan/[0.16] shadow-[0_0_26px_rgba(45,212,191,0.18)]"
+              : "text-cyber-text-secondary border-[var(--panel-border)] bg-cyber-surface"
           }`}
+        whileHover={{ y: -2 }}
         animate={
-          isDone ? { scale: [1, 1.2, 1], transition: { duration: 0.4 } } : {}
-        }
-        style={
           isDone
-            ? { boxShadow: "var(--glow-success)" }
+            ? { scale: [1, 1.16, 1], transition: { duration: 0.4 } }
             : isActive
-              ? { boxShadow: "var(--glow-cyan)" }
+              ? { y: [0, -3, 0], transition: { duration: 1.2, repeat: Infinity } }
               : {}
         }
       >

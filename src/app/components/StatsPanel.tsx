@@ -26,26 +26,26 @@ export default function StatsPanel({
   const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
 
   const stats = [
-    { icon: Clock, label: "Time", value: formatTime(timer), color: "text-cyber-cyan" },
-    { icon: Target, label: "Accuracy", value: `${accuracy}%`, color: "text-cyber-success" },
-    { icon: TrendingUp, label: "Best Streak", value: `${bestStreak}`, color: "text-cyber-warning" },
-    { icon: Trophy, label: "Words", value: `${wordsCompleted}`, color: "text-cyber-purple" },
+    { icon: Clock, label: "Хугацаа", value: formatTime(timer), color: "text-cyber-cyan" },
+    { icon: Target, label: "Нарийвчлал", value: `${accuracy}%`, color: "text-cyber-success" },
+    { icon: TrendingUp, label: "Шилдэг дараалал", value: `${bestStreak}`, color: "text-cyber-warning" },
+    { icon: Trophy, label: "Үг", value: `${wordsCompleted}`, color: "text-cyber-purple" },
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl bg-[var(--panel-bg)] border border-[var(--panel-border)]"
+          className="app-card flex items-center gap-3 rounded-2xl px-3 py-3.5"
         >
-          <stat.icon className={`w-4 h-4 ${stat.color}`} />
-          <span className="text-base font-bold font-mono text-cyber-text">
-            {stat.value}
-          </span>
-          <span className="text-[0.6rem] font-semibold uppercase tracking-wider text-cyber-text-muted">
-            {stat.label}
-          </span>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--panel-border)] bg-cyber-elevated">
+            <stat.icon className={`w-4 h-4 ${stat.color}`} />
+          </div>
+          <div className="min-w-0">
+            <span className="block text-sm font-semibold font-mono text-cyber-text">{stat.value}</span>
+            <span className="block text-[0.68rem] text-cyber-text-muted">{stat.label}</span>
+          </div>
         </div>
       ))}
     </div>

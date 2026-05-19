@@ -11,10 +11,10 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-9 h-9 rounded-xl flex items-center justify-center border transition-all duration-300 cursor-pointer
+      className="relative w-9 h-9 rounded-lg flex items-center justify-center border transition-colors cursor-pointer
         border-[var(--panel-border)] bg-[var(--bg-elevated)]
         hover:border-[var(--panel-hover-border)]"
-      title={isDark ? "Light горим" : "Dark горим"}
+      title={isDark ? "Гэгээтэй горим" : "Бараан горим"}
     >
       <motion.div
         key={theme}
@@ -24,9 +24,9 @@ export default function ThemeToggle() {
         transition={{ type: "spring", stiffness: 400, damping: 20 }}
       >
         {isDark ? (
-          <Sun className="w-4 h-4 text-cyber-warning" />
+          <Sun className="w-4 h-4 text-cyber-text-secondary" />
         ) : (
-          <Moon className="w-4 h-4 text-cyber-purple" />
+          <Moon className="w-4 h-4 text-cyber-text-secondary" />
         )}
       </motion.div>
     </button>

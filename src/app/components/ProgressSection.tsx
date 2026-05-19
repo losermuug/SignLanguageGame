@@ -24,10 +24,10 @@ export default function ProgressSection() {
       <div className="flex items-center justify-between gap-3 mb-4">
         <div>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-cyber-text-muted">
-            Progress
+            Ахиц
           </h2>
           <p className="text-sm text-cyber-text-secondary mt-1">
-            Keep track of lesson completion at a glance.
+            Хичээлийн гүйцэтгэлээ нэг дор хянаарай.
           </p>
         </div>
         <div className="w-10 h-10 rounded-xl bg-cyber-success/10 border border-cyber-success/20 flex items-center justify-center shrink-0">
@@ -43,11 +43,11 @@ export default function ProgressSection() {
                 {completionPercent}%
               </span>
               <span className="text-xs font-semibold uppercase tracking-wider text-cyber-text-muted">
-                Complete
+                Дууссан
               </span>
             </div>
             <p className="text-xs text-cyber-text-secondary mt-1">
-              {lessonProgress.completedLessons} of {lessonProgress.totalLessons} lessons finished
+              {lessonProgress.completedLessons} / {lessonProgress.totalLessons} хичээл дууссан
             </p>
           </div>
 
@@ -71,7 +71,7 @@ export default function ProgressSection() {
         <div className="grid grid-cols-2 gap-3 mt-4">
           <div className="rounded-xl border border-[var(--panel-border)] bg-white/[0.02] px-3 py-2.5">
             <p className="text-[0.62rem] uppercase tracking-wider text-cyber-text-muted">
-              Completed
+              Дууссан
             </p>
             <div className="flex items-center gap-2 mt-1">
               <CheckCircle2 className="w-4 h-4 text-cyber-success" />
@@ -83,7 +83,7 @@ export default function ProgressSection() {
 
           <div className="rounded-xl border border-[var(--panel-border)] bg-white/[0.02] px-3 py-2.5">
             <p className="text-[0.62rem] uppercase tracking-wider text-cyber-text-muted">
-              Progress
+              Ахиц
             </p>
             <div className="flex items-center gap-2 mt-1">
               <Target className="w-4 h-4 text-cyber-cyan" />

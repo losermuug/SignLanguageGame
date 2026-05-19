@@ -16,21 +16,21 @@ export default function WordDisplay({
   isCompleted,
 }: WordDisplayProps) {
   return (
-    <div className="backdrop-blur-xl bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-2xl p-6">
+    <section className="app-card rounded-2xl p-5">
       {/* Header row */}
-      <div className="flex items-center justify-between mb-5">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-cyber-text-muted mb-1">
-            Target Word
+          <h2 className="text-sm font-semibold text-cyber-text">
+            Дадлага үг
           </h2>
-          <p className="text-sm text-cyber-text-secondary">
-            Sign each letter in order
+          <p className="text-xs text-cyber-text-muted">
+            {charIndex + 1} / {activeWord.length}
           </p>
         </div>
 
         {/* Status badge */}
         <span
-          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.7rem] font-semibold tracking-wider uppercase border
+          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.7rem] font-medium border
             ${isCompleted
               ? "bg-cyber-success/10 text-cyber-success border-cyber-success/20"
               : charIndex > 0
@@ -47,12 +47,12 @@ export default function WordDisplay({
                   : "bg-cyber-text-muted"
             }`}
           />
-          {isCompleted ? "Complete" : charIndex > 0 ? "Signing" : "Ready"}
+          {isCompleted ? "Дууссан" : charIndex > 0 ? "Дохиж байна" : "Бэлэн"}
         </span>
       </div>
 
       {/* Letter tiles */}
-      <div className="flex items-center justify-center gap-2 flex-wrap">
+      <div className="flex items-center justify-center gap-2.5 flex-wrap rounded-2xl border border-[var(--panel-border)] bg-cyber-surface/70 p-4">
         {activeWord.split("").map((letter, idx) => (
           <LetterTile
             key={`${activeWord}-${idx}`}
@@ -64,6 +64,6 @@ export default function WordDisplay({
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

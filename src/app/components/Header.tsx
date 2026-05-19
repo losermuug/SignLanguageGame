@@ -1,6 +1,6 @@
 "use client";
 
-import { Hand, Trophy, Zap, Sparkles } from "lucide-react";
+import { Hand, Trophy, Zap } from "lucide-react";
 import DifficultySelector from "./DifficultySelector";
 import ThemeToggle from "./ThemeToggle";
 import type { Difficulty } from "../hooks/useGameState";
@@ -21,18 +21,18 @@ export default function Header({
   onDifficultyChange,
 }: HeaderProps) {
   return (
-    <header className="w-full px-6 py-4 flex items-center justify-between border-b border-[var(--panel-border)] backdrop-blur-md bg-[var(--bg-glass)]">
+    <header className="sticky top-0 z-30 w-full px-4 py-3 lg:px-8 flex items-center justify-between border-b border-[var(--panel-border)] bg-[var(--bg-glass)] backdrop-blur-xl">
       {/* Logo */}
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyber-cyan/20 to-cyber-purple/20 border border-cyber-cyan/20 flex items-center justify-center">
-          <Hand className="w-4.5 h-4.5 text-cyber-cyan" />
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="w-10 h-10 rounded-xl border border-cyber-cyan/25 bg-cyber-cyan/10 flex items-center justify-center shadow-[0_0_28px_rgba(45,212,191,0.16)]">
+          <Hand className="w-5 h-5 text-cyber-cyan" />
         </div>
         <div>
-          <h1 className="text-base font-bold tracking-tight text-cyber-text">
-            Sign<span className="text-cyber-cyan">Lang</span>
+          <h1 className="text-lg font-semibold tracking-tight text-cyber-text leading-tight">
+            Дохио Тоглоом
           </h1>
-          <p className="text-[0.65rem] text-cyber-text-muted tracking-wider uppercase">
-            Alphabet Game
+          <p className="text-xs text-cyber-text-secondary">
+            Үсгийн дохио давтах
           </p>
         </div>
       </div>
@@ -43,20 +43,17 @@ export default function Header({
       </div>
 
       {/* Stats + Theme Toggle */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-5">
-          <div className="flex items-center gap-2 text-sm" title="Score">
+      <div className="flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-2">
+          <div className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm" title="Оноо">
             <Trophy className="w-4 h-4 text-cyber-warning" />
-            <span className="font-mono font-bold text-cyber-text">{score}</span>
+            <span className="font-mono font-semibold text-cyber-text">{score}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm" title="Streak">
+          <div className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm" title="Дараалал">
             <Zap className="w-4 h-4 text-cyber-cyan" />
-            <span className="font-mono font-bold text-cyber-text">{streak}</span>
+            <span className="font-mono font-semibold text-cyber-text">{streak}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm" title="Words completed">
-            <Sparkles className="w-4 h-4 text-cyber-purple" />
-            <span className="font-mono font-bold text-cyber-text">{wordsCompleted}</span>
-          </div>
+          <span className="rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm text-cyber-text-secondary">{wordsCompleted} үг</span>
         </div>
 
         {/* Theme toggle */}

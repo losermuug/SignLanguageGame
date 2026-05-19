@@ -26,10 +26,10 @@ export default function CompletionCard({
         </div>
         <div>
           <h3 className="text-lg font-bold text-cyber-success">
-            Word Complete!
+            Үг дууслаа!
           </h3>
           <p className="text-sm text-cyber-text-secondary mt-1">
-            +50 bonus points
+            +50 нэмэлт оноо
           </p>
         </div>
         <div className="flex gap-3 mt-2">
@@ -41,7 +41,7 @@ export default function CompletionCard({
               hover:from-cyber-cyan/25 hover:to-cyber-purple/15 hover:border-cyber-cyan/50
               transition-all duration-300 cursor-pointer"
           >
-            Next Word
+            Дараагийн үг
             <ChevronRight className="w-4 h-4" />
           </button>
           <button
@@ -52,7 +52,7 @@ export default function CompletionCard({
               transition-all duration-300 cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
-            Retry
+            Дахин оролдох
           </button>
         </div>
       </div>
