@@ -8,9 +8,9 @@ interface ProgressBarProps {
 
 export default function ProgressBar({ progress }: ProgressBarProps) {
   return (
-    <div className="w-full h-1 bg-cyber-elevated">
+    <div className="w-full h-1.5 bg-cyber-elevated">
       <motion.div
-        className="h-full bg-cyber-cyan rounded-r-full"
+        className="h-full bg-gradient-to-r from-cyber-cyan via-cyber-success to-cyber-warning rounded-r-full"
         initial={{ width: 0 }}
         animate={{ width: `${progress}%` }}
         transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}

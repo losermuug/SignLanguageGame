@@ -21,18 +21,18 @@ export default function Header({
   onDifficultyChange,
 }: HeaderProps) {
   return (
-    <header className="w-full px-4 py-3 lg:px-8 flex items-center justify-between border-b border-[var(--panel-border)] bg-[var(--bg-glass)]">
+    <header className="sticky top-0 z-30 w-full px-4 py-3 lg:px-8 flex items-center justify-between border-b border-[var(--panel-border)] bg-[var(--bg-glass)] backdrop-blur-xl">
       {/* Logo */}
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-9 h-9 rounded-lg bg-cyber-elevated border border-[var(--panel-border)] flex items-center justify-center">
-          <Hand className="w-4.5 h-4.5 text-cyber-cyan" />
+        <div className="w-10 h-10 rounded-xl border border-cyber-cyan/25 bg-cyber-cyan/10 flex items-center justify-center shadow-[0_0_28px_rgba(45,212,191,0.16)]">
+          <Hand className="w-5 h-5 text-cyber-cyan" />
         </div>
         <div>
-          <h1 className="text-base font-semibold tracking-tight text-cyber-text">
-            SignLang
+          <h1 className="text-lg font-semibold tracking-tight text-cyber-text leading-tight">
+            Дохио Тоглоом
           </h1>
-          <p className="text-xs text-cyber-text-muted">
-            ASL alphabet practice
+          <p className="text-xs text-cyber-text-secondary">
+            Үсгийн дохио давтах
           </p>
         </div>
       </div>
@@ -44,16 +44,16 @@ export default function Header({
 
       {/* Stats + Theme Toggle */}
       <div className="flex items-center gap-3">
-        <div className="hidden sm:flex items-center gap-4">
-          <div className="flex items-center gap-2 text-sm" title="Score">
-            <Trophy className="w-4 h-4 text-cyber-text-muted" />
+        <div className="hidden sm:flex items-center gap-2">
+          <div className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm" title="Оноо">
+            <Trophy className="w-4 h-4 text-cyber-warning" />
             <span className="font-mono font-semibold text-cyber-text">{score}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm" title="Streak">
-            <Zap className="w-4 h-4 text-cyber-text-muted" />
+          <div className="flex items-center gap-2 rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm" title="Дараалал">
+            <Zap className="w-4 h-4 text-cyber-cyan" />
             <span className="font-mono font-semibold text-cyber-text">{streak}</span>
           </div>
-          <span className="text-sm text-cyber-text-muted">{wordsCompleted} words</span>
+          <span className="rounded-full border border-[var(--panel-border)] bg-cyber-elevated px-3 py-1.5 text-sm text-cyber-text-secondary">{wordsCompleted} үг</span>
         </div>
 
         {/* Theme toggle */}

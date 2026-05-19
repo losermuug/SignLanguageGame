@@ -25,15 +25,20 @@ export default function LetterTile({
       transition={{ delay: index * 0.06, duration: 0.4 }}
     >
       <motion.div
-        className={`relative flex items-center justify-center w-12 h-14 rounded-xl text-xl font-semibold font-mono uppercase border transition-colors
+        className={`relative flex h-14 w-12 items-center justify-center rounded-xl border text-xl font-semibold font-mono uppercase transition-all
           ${isDone
-            ? "text-cyber-success border-cyber-success/30 bg-cyber-success/[0.08]"
+            ? "text-cyber-success border-cyber-success/35 bg-cyber-success/[0.1]"
             : isActive
-              ? "text-cyber-text border-cyber-cyan/50 bg-cyber-cyan/[0.12]"
+              ? "text-cyber-text border-cyber-cyan/55 bg-cyber-cyan/[0.16] shadow-[0_0_26px_rgba(45,212,191,0.18)]"
               : "text-cyber-text-secondary border-[var(--panel-border)] bg-cyber-surface"
           }`}
+        whileHover={{ y: -2 }}
         animate={
-          isDone ? { scale: [1, 1.2, 1], transition: { duration: 0.4 } } : {}
+          isDone
+            ? { scale: [1, 1.16, 1], transition: { duration: 0.4 } }
+            : isActive
+              ? { y: [0, -3, 0], transition: { duration: 1.2, repeat: Infinity } }
+              : {}
         }
       >
         {letter}

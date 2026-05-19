@@ -20,8 +20,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 The browser extracts MediaPipe hand and pose landmarks from the webcam, sends
 156 landmark features to `POST /api/predict`, and that route runs
-`backend/asl_model/predict.py`. The backend loads `models/asl/model.tflite`
-and returns the predicted character.
+`backend/asl_model/predict.py`. The backend uses the TFLite landmark model at
+`models/asl/model.tflite` with `models/asl/labels.txt`.
 
 Install Python inference dependencies in a Python 3.11 virtual environment:
 

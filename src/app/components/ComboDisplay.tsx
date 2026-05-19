@@ -38,7 +38,7 @@ export default function ComboDisplay({ streak, comboMultiplier }: ComboDisplayPr
       <div className="flex flex-col">
         <div className="flex items-center gap-1.5">
           <span className="text-xs font-semibold uppercase tracking-wider text-cyber-text-muted">
-            Combo
+            Комбо
           </span>
           <motion.span
             key={comboMultiplier}

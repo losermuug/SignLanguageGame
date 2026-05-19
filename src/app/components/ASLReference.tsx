@@ -6,37 +6,38 @@ import Image from "next/image";
 
 /* Descriptions for every ASL letter */
 const ASL_HINTS: Record<string, string> = {
-  A: "Fist with thumb beside index finger",
-  B: "Flat hand, fingers up, thumb across palm",
-  C: "Curved hand like holding a ball",
-  D: "Index up, other fingers touch thumb",
-  E: "Fingers curled down, thumb tucked",
-  F: "OK sign — thumb & index touch, others up",
-  G: "Fist, index & thumb point sideways",
-  H: "Index & middle point sideways together",
-  I: "Fist with pinky raised",
-  J: "Pinky raised, trace J shape in air",
-  K: "Index & middle up, thumb between them",
-  L: "L-shape — index up, thumb out",
-  M: "Thumb under three fingers",
-  N: "Thumb under two fingers",
-  O: "All fingertips touch thumb — O shape",
-  P: "Like K, but pointed downward",
-  Q: "Like G, but pointed downward",
-  R: "Cross index & middle fingers",
-  S: "Fist with thumb over fingers",
-  T: "Thumb between index & middle",
-  U: "Index & middle up together",
-  V: "Peace sign — index & middle spread",
-  W: "Three fingers up — index, middle, ring",
-  X: "Index finger hooked/bent",
-  Y: "Thumb & pinky out — hang loose",
-  Z: "Index finger traces Z shape in air",
+  A: "Эрхий хуруугаа долооворын хажууд тавьсан атгасан гар",
+  B: "Хуруунууд дээш шулуун, эрхий алганы дээгүүр",
+  C: "Бөмбөг барьж байгаа мэт муруй гар",
+  D: "Долоовор дээш, бусад хуруу эрхийтэй нийлнэ",
+  E: "Хуруунууд дотогш нугарч, эрхий далд байрлана",
+  F: "OK хэлбэр, эрхий ба долоовор нийлнэ",
+  G: "Долоовор ба эрхий хажуу тийш чиглэнэ",
+  H: "Долоовор, дунд хуруу хамт хажуу тийш",
+  I: "Чигчий хуруу дээш гарсан атгасан гар",
+  J: "Чигчийгээр агаарт J хэлбэр зурна",
+  K: "Долоовор, дунд хуруу дээш, эрхий дунд нь",
+  L: "L хэлбэр, долоовор дээш, эрхий хажуу тийш",
+  M: "Эрхий гурван хурууны доор",
+  N: "Эрхий хоёр хурууны доор",
+  O: "Бүх хурууны үзүүр эрхийтэй нийлж O хэлбэр үүсгэнэ",
+  P: "K-тэй төстэй, доош чиглэсэн",
+  Q: "G-тэй төстэй, доош чиглэсэн",
+  R: "Долоовор ба дунд хурууг зөрүүлнэ",
+  S: "Эрхий хурууны дээр байрласан атгасан гар",
+  T: "Эрхий долоовор ба дунд хурууны завсар",
+  U: "Долоовор ба дунд хуруу хамт дээш",
+  V: "Долоовор, дунд хуруу салж V хэлбэр үүсгэнэ",
+  W: "Гурван хуруу дээш",
+  X: "Долоовор хуруу дэгээ шиг нугарна",
+  Y: "Эрхий ба чигчий хоёр хажуу тийш",
+  Z: "Долоовор хуруугаар агаарт Z зурна",
 };
 
-/* Letters that have generated images in /asl/ */
+/* Letters that have cropped guide images in /asl/ */
 const LETTERS_WITH_IMAGES = new Set([
   "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+  "M", "N", "O", "P", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
 ]);
 
 interface ASLReferenceProps {
@@ -45,19 +46,20 @@ interface ASLReferenceProps {
 
 export default function ASLReference({ letter }: ASLReferenceProps) {
   const upperLetter = letter.toUpperCase();
-  const hint = ASL_HINTS[upperLetter] || "No hint available";
+  const hint = ASL_HINTS[upperLetter] || "Тайлбар байхгүй";
   const hasImage = LETTERS_WITH_IMAGES.has(upperLetter);
-  const [imgError, setImgError] = useState(false);
+  const [failedImageLetter, setFailedImageLetter] = useState<string | null>(null);
+  const showImage = hasImage && failedImageLetter !== upperLetter;
 
   return (
-    <motion.div
-      className="bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-xl p-5 overflow-hidden"
+    <motion.section
+      className="app-card rounded-2xl p-5 overflow-hidden"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
       <h2 className="text-sm font-semibold text-cyber-text mb-3">
-        Reference
+        Заавар
       </h2>
 
       <div className="flex gap-4">
@@ -79,7 +81,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
             </AnimatePresence>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-cyber-text">Letter {upperLetter}</span>
+                <span className="text-sm font-semibold text-cyber-text">{upperLetter} үсэг</span>
               </div>
               <p className="text-xs text-cyber-text-secondary leading-relaxed mt-1">
                 {hint}
@@ -94,7 +96,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
               <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <span className="text-[0.68rem] text-cyber-text-secondary font-medium">
-              Hold steady until the letter appears
+              Үсэг танигдтал гараа тогтвортой барина уу
             </span>
           </div>
         </div>
@@ -103,21 +105,21 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
         <AnimatePresence mode="wait">
           <motion.div
             key={upperLetter}
-            className="w-24 h-24 rounded-lg overflow-hidden border border-[var(--panel-border)] bg-cyber-surface shrink-0 flex items-center justify-center"
+            className="w-28 h-28 rounded-2xl overflow-hidden border border-[var(--panel-border)] bg-cyber-surface shrink-0 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
           >
-            {hasImage && !imgError ? (
+            {showImage ? (
               <Image
-                src={`/asl/${upperLetter.toLowerCase()}.png`}
+                src={`/asl/${upperLetter.toLowerCase()}.webp`}
                 alt={`ASL sign for letter ${upperLetter}`}
-                width={96}
-                height={96}
+                width={112}
+                height={112}
                 className="w-full h-full object-cover"
                 priority
-                onError={() => setImgError(true)}
+                onError={() => setFailedImageLetter(upperLetter)}
               />
             ) : (
               /* Fallback: styled letter with hand emoji */
@@ -130,6 +132,6 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
           </motion.div>
         </AnimatePresence>
       </div>
-    </motion.div>
+    </motion.section>
   );
 }

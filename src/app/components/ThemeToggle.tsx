@@ -14,7 +14,7 @@ export default function ThemeToggle() {
       className="relative w-9 h-9 rounded-lg flex items-center justify-center border transition-colors cursor-pointer
         border-[var(--panel-border)] bg-[var(--bg-elevated)]
         hover:border-[var(--panel-hover-border)]"
-      title={isDark ? "Light горим" : "Dark горим"}
+      title={isDark ? "Гэгээтэй горим" : "Бараан горим"}
     >
       <motion.div
         key={theme}

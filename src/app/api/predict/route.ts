@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 interface PredictRequest {
-  image?: string;
   features?: number[];
 }
 
@@ -39,11 +38,7 @@ function startWorker() {
   const scriptPath = "backend/asl_model/predict.py";
   const pythonBin = process.env.ASL_PYTHON_BIN ?? "python3";
   worker = spawn(pythonBin, [scriptPath, "--server"], {
-    env: {
-      ...process.env,
-      ASL_MODEL_PATH: process.env.ASL_MODEL_PATH ?? "models/asl/model.tflite",
-      ASL_LABELS_PATH: process.env.ASL_LABELS_PATH ?? "models/asl/labels.txt",
-    },
+    env: process.env,
     stdio: ["pipe", "pipe", "pipe"],
   });
 
@@ -138,15 +133,15 @@ export async function POST(request: NextRequest) {
     ) {
       return NextResponse.json({ error: "Expected 156 numeric landmark features" }, { status: 400 });
     }
-  } else if (!body.image?.startsWith("data:image/")) {
+  } else {
     return NextResponse.json(
-      { error: "Expected landmark features or a data:image frame" },
+      { error: "Expected 156 numeric landmark features" },
       { status: 400 }
     );
   }
 
   try {
-    const prediction = await runPythonPredictor(body.features ? { features: body.features } : { image: body.image });
+    const prediction = await runPythonPredictor({ features: body.features });
     if (prediction.error) {
       return NextResponse.json(prediction, { status: 503 });
     }

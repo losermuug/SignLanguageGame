@@ -29,7 +29,7 @@ const WebcamView = forwardRef<WebcamViewHandle, WebcamViewProps>(
     };
 
     return (
-      <div className="relative rounded-xl overflow-hidden bg-cyber-surface border border-[var(--panel-border)] aspect-[4/3]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--panel-border)] bg-cyber-surface shadow-[inset_0_0_0_1px_rgba(255,255,255,0.025)]">
         {/* Webcam or placeholder */}
         {isActive ? (
           <Webcam
@@ -58,7 +58,7 @@ const WebcamView = forwardRef<WebcamViewHandle, WebcamViewProps>(
               </svg>
             </div>
             <span className="text-cyber-text-muted text-sm font-medium">
-              Camera inactive
+              Камер унтраалттай
             </span>
           </div>
         )}
@@ -71,12 +71,18 @@ const WebcamView = forwardRef<WebcamViewHandle, WebcamViewProps>(
           className="absolute inset-0 w-full h-full z-[2] pointer-events-none"
         />
 
+        <div className="pointer-events-none absolute inset-3 z-[3] rounded-xl border border-white/10" />
+        <div className="pointer-events-none absolute left-3 top-3 z-[4] h-8 w-8 corner-bracket-tl opacity-80" />
+        <div className="pointer-events-none absolute right-3 top-3 z-[4] h-8 w-8 corner-bracket-tr opacity-80" />
+        <div className="pointer-events-none absolute bottom-3 left-3 z-[4] h-8 w-8 corner-bracket-bl opacity-80" />
+        <div className="pointer-events-none absolute bottom-3 right-3 z-[4] h-8 w-8 corner-bracket-br opacity-80" />
+
         {/* Live indicator */}
         {isActive && (
-          <div className="absolute top-3 left-3 z-[5] flex items-center gap-1.5 rounded-full bg-black/45 px-2.5 py-1 backdrop-blur-sm">
+          <div className="absolute top-4 left-4 z-[5] flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 backdrop-blur-sm">
             <div className="w-1.5 h-1.5 rounded-full bg-cyber-success" />
             <span className="text-[0.65rem] font-medium uppercase tracking-wide text-white/85">
-              Live
+              Шууд
             </span>
           </div>
         )}

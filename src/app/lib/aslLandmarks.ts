@@ -6,7 +6,6 @@ import {
   PoseLandmarker,
   type HandLandmarkerResult,
   type NormalizedLandmark,
-  type PoseLandmarkerResult,
 } from "@mediapipe/tasks-vision";
 
 const TASKS_VERSION = "0.10.35";
@@ -27,11 +26,6 @@ const HAND_CONNECTIONS = [
   [0, 13], [13, 14], [14, 15], [15, 16],
   [0, 17], [17, 18], [18, 19], [19, 20],
 ] as const;
-const POSE_CONNECTIONS = [
-  [13, 15], [15, 17], [17, 19], [19, 21],
-  [14, 16], [16, 18], [18, 20], [20, 22],
-] as const;
-
 let smoothedRightHand: NormalizedLandmark[] = [];
 let smoothedLeftHand: NormalizedLandmark[] = [];
 let smoothedPose: NormalizedLandmark[] = [];
@@ -93,7 +87,7 @@ export function getLandmarkPredictionInput(
   smoothedLeftHand = smoothLandmarks(smoothedLeftHand, hands.left);
   smoothedPose = smoothLandmarks(smoothedPose, poseResult.landmarks[0] ?? []);
 
-  drawLandmarks(canvas, smoothedRightHand, smoothedLeftHand, smoothedPose);
+  drawLandmarks(canvas, smoothedRightHand);
 
   const features = [
     ...axisValues("x", smoothedRightHand, smoothedLeftHand, smoothedPose),
@@ -266,9 +260,7 @@ function smoothLandmarks(previous: NormalizedLandmark[], current: NormalizedLand
 
 function drawLandmarks(
   canvas: HTMLCanvasElement | null,
-  rightHand: NormalizedLandmark[],
-  leftHand: NormalizedLandmark[],
-  pose: NormalizedLandmark[]
+  rightHand: NormalizedLandmark[]
 ) {
   if (!canvas) return;
 
@@ -283,16 +275,6 @@ function drawLandmarks(
     line: "rgba(0, 240, 255, 0.45)",
     point: "rgba(0, 240, 255, 0.95)",
     radius: 3,
-  });
-  drawConnectedPoints(context, leftHand, HAND_CONNECTIONS, canvas.width, canvas.height, {
-    line: "rgba(52, 211, 153, 0.42)",
-    point: "rgba(52, 211, 153, 0.9)",
-    radius: 3,
-  });
-  drawConnectedPoints(context, pose, POSE_CONNECTIONS, canvas.width, canvas.height, {
-    line: "rgba(167, 139, 250, 0.32)",
-    point: "rgba(167, 139, 250, 0.82)",
-    radius: 4,
   });
 }
 
