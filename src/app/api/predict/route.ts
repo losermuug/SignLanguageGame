@@ -109,7 +109,7 @@ function runPythonPredictor(payload: PredictRequest): Promise<PredictResponse> {
     const id = ++requestId;
     const timeoutId = setTimeout(() => {
       pendingRequests.delete(id);
-      reject(new Error("Prediction timed out"));
+      reject(new Error("Танилтын хугацаа хэтэрлээ"));
     }, 4000);
 
     pendingRequests.set(id, { resolve, reject, timeoutId });
@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
   try {
     body = (await request.json()) as PredictRequest;
   } catch {
-    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    return NextResponse.json({ error: "Хүсэлтийн өгөгдөл буруу байна" }, { status: 400 });
   }
 
   if (body.features) {
@@ -131,11 +131,11 @@ export async function POST(request: NextRequest) {
       body.features.length !== 156 ||
       body.features.some((value) => typeof value !== "number" || !Number.isFinite(value))
     ) {
-      return NextResponse.json({ error: "Expected 156 numeric landmark features" }, { status: 400 });
+      return NextResponse.json({ error: "156 ширхэг тоон landmark feature хэрэгтэй" }, { status: 400 });
     }
   } else {
     return NextResponse.json(
-      { error: "Expected 156 numeric landmark features" },
+      { error: "156 ширхэг тоон landmark feature хэрэгтэй" },
       { status: 400 }
     );
   }
@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
     }
     return NextResponse.json(prediction);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Prediction failed";
+    const message = error instanceof Error ? error.message : "Танилт амжилтгүй";
     return NextResponse.json(
       {
         letter: null,

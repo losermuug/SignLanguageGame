@@ -114,7 +114,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
             {showImage ? (
               <Image
                 src={`/asl/${upperLetter.toLowerCase()}.webp`}
-                alt={`ASL sign for letter ${upperLetter}`}
+                alt={`${upperLetter} үсгийн дохионы зураг`}
                 width={112}
                 height={112}
                 className="w-full h-full object-cover"
