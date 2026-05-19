@@ -16,6 +16,47 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## ASL model backend
+
+The browser extracts MediaPipe hand and pose landmarks from the webcam, sends
+156 landmark features to `POST /api/predict`, and that route runs
+`backend/asl_model/predict.py`. The backend loads `models/asl/model.tflite`
+and returns the predicted character.
+
+Install Python inference dependencies in a Python 3.11 virtual environment:
+
+```bash
+/opt/homebrew/bin/python3.11 -m venv .venv
+.venv/bin/python -m pip install -r backend/requirements.txt
+```
+
+Use the local TFLite model:
+
+```bash
+cp /Users/muugii/Downloads/model.tflite models/asl/model.tflite
+```
+
+Or download the Kaggle kernel output:
+
+```bash
+python3 -m pip install kaggle
+mkdir -p ~/.kaggle
+# put your kaggle.json token in ~/.kaggle/kaggle.json
+chmod 600 ~/.kaggle/kaggle.json
+./scripts/download-kaggle-model.sh models/asl
+```
+
+If the downloaded model uses a custom label order, replace
+`models/asl/labels.txt` with one label per output index. You can override paths
+with `ASL_MODEL_PATH`, `ASL_LABELS_PATH`, and `ASL_PYTHON_BIN`.
+
+For local development, run Next with the virtualenv Python so `/api/predict`
+can import TensorFlow:
+
+```bash
+ASL_PYTHON_BIN=.venv/bin/python npm run dev
+```
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

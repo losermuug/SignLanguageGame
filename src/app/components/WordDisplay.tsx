@@ -16,21 +16,21 @@ export default function WordDisplay({
   isCompleted,
 }: WordDisplayProps) {
   return (
-    <div className="backdrop-blur-xl bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-2xl p-6">
+    <div className="bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-xl p-5">
       {/* Header row */}
-      <div className="flex items-center justify-between mb-5">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-cyber-text-muted mb-1">
-            Target Word
+          <h2 className="text-sm font-semibold text-cyber-text">
+            Word
           </h2>
-          <p className="text-sm text-cyber-text-secondary">
-            Sign each letter in order
+          <p className="text-xs text-cyber-text-muted">
+            Sign the highlighted letter
           </p>
         </div>
 
         {/* Status badge */}
         <span
-          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.7rem] font-semibold tracking-wider uppercase border
+          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.7rem] font-medium border
             ${isCompleted
               ? "bg-cyber-success/10 text-cyber-success border-cyber-success/20"
               : charIndex > 0

@@ -6,36 +6,36 @@
 
 :root,
 [data-theme="dark"] {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #111119;
-  --bg-elevated: #16161f;
-  --bg-glass: rgba(22, 22, 31, 0.65);
+  --bg-primary: #0f1115;
+  --bg-secondary: #151821;
+  --bg-elevated: #1b1f2a;
+  --bg-glass: rgba(15, 17, 21, 0.88);
 
-  --accent-cyan: #00f0ff;
-  --accent-purple: #a855f7;
-  --accent-pink: #f472b6;
-  --accent-success: #34d399;
-  --accent-warning: #fbbf24;
-  --accent-danger: #f87171;
+  --accent-cyan: #38bdf8;
+  --accent-purple: #818cf8;
+  --accent-pink: #fb7185;
+  --accent-success: #22c55e;
+  --accent-warning: #eab308;
+  --accent-danger: #ef4444;
 
-  --text-primary: #f0f0f8;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
 
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-accent: rgba(0, 240, 255, 0.25);
+  --border-subtle: rgba(148, 163, 184, 0.16);
+  --border-accent: rgba(56, 189, 248, 0.3);
 
-  --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.15), 0 0 60px rgba(0, 240, 255, 0.05);
-  --glow-purple: 0 0 20px rgba(168, 85, 247, 0.15), 0 0 60px rgba(168, 85, 247, 0.05);
-  --glow-success: 0 0 20px rgba(52, 211, 153, 0.2), 0 0 60px rgba(52, 211, 153, 0.08);
+  --glow-cyan: none;
+  --glow-purple: none;
+  --glow-success: none;
 
-  --grid-line: rgba(0, 240, 255, 0.015);
-  --ambient-cyan: rgba(0, 240, 255, 0.06);
-  --ambient-purple: rgba(168, 85, 247, 0.04);
+  --grid-line: transparent;
+  --ambient-cyan: transparent;
+  --ambient-purple: transparent;
 
-  --panel-bg: rgba(255, 255, 255, 0.03);
-  --panel-border: rgba(255, 255, 255, 0.06);
-  --panel-hover-border: rgba(255, 255, 255, 0.12);
+  --panel-bg: rgba(21, 24, 33, 0.82);
+  --panel-border: rgba(148, 163, 184, 0.16);
+  --panel-hover-border: rgba(148, 163, 184, 0.28);
 }
 
 /* ============================================
@@ -43,10 +43,10 @@
    ============================================ */
 
 [data-theme="light"] {
-  --bg-primary: #f5f7fa;
+  --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
-  --bg-elevated: #edf0f5;
-  --bg-glass: rgba(255, 255, 255, 0.75);
+  --bg-elevated: #f1f5f9;
+  --bg-glass: rgba(248, 250, 252, 0.88);
 
   --accent-cyan: #0891b2;
   --accent-purple: #7c3aed;
@@ -70,9 +70,9 @@
   --ambient-cyan: rgba(8, 145, 178, 0.04);
   --ambient-purple: rgba(124, 58, 237, 0.03);
 
-  --panel-bg: rgba(255, 255, 255, 0.6);
-  --panel-border: rgba(0, 0, 0, 0.08);
-  --panel-hover-border: rgba(0, 0, 0, 0.15);
+  --panel-bg: rgba(255, 255, 255, 0.86);
+  --panel-border: rgba(15, 23, 42, 0.1);
+  --panel-hover-border: rgba(15, 23, 42, 0.18);
 }
 
 /* ============================================
@@ -112,29 +112,12 @@ body {
 
 /* Grid background pattern */
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 /* Top ambient glow */
 body::after {
-  content: "";
-  position: fixed;
-  top: -50%;
-  left: -10%;
-  width: 120%;
-  height: 100%;
-  background: radial-gradient(ellipse at 50% 0%, var(--ambient-cyan) 0%, transparent 60%),
-    radial-gradient(ellipse at 30% 0%, var(--ambient-purple) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 /* ============================================
@@ -185,13 +168,7 @@ body::after {
 
 /* Scanline overlay */
 .webcam-scanline {
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 240, 255, 0.015) 2px,
-    rgba(0, 240, 255, 0.015) 4px
-  );
+  display: none;
 }
 
 /* Corner bracket decorations */
@@ -202,27 +179,12 @@ body::after {
 
 /* Active letter ring */
 .letter-active-ring::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  border: 2px solid transparent;
-  background: linear-gradient(180deg, rgba(0, 240, 255, 0.3), transparent) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: border-pulse 2s ease-in-out infinite;
+  display: none;
 }
 
 /* Progress bar shimmer */
 .progress-shimmer::after {
-  content: "";
-  position: absolute;
-  top: 0; right: 0;
-  width: 20px; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
-  border-radius: inherit;
-  animation: shimmer 2s ease-in-out infinite;
+  display: none;
 }
 
 /* Confetti */

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -49,20 +49,15 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
   const hasImage = LETTERS_WITH_IMAGES.has(upperLetter);
   const [imgError, setImgError] = useState(false);
 
-  const letterColor = useMemo(() => {
-    const hue = ((upperLetter.charCodeAt(0) - 65) / 26) * 360;
-    return `hsl(${hue}, 70%, 60%)`;
-  }, [upperLetter]);
-
   return (
     <motion.div
-      className="backdrop-blur-xl bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-2xl p-5 overflow-hidden"
+      className="bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-xl p-5 overflow-hidden"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <h2 className="text-xs font-semibold uppercase tracking-widest text-cyber-text-muted mb-3">
-        ASL Reference
+      <h2 className="text-sm font-semibold text-cyber-text mb-3">
+        Reference
       </h2>
 
       <div className="flex gap-4">
@@ -73,12 +68,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
             <AnimatePresence mode="wait">
               <motion.div
                 key={upperLetter}
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl font-extrabold font-mono border-2 shrink-0"
-                style={{
-                  color: letterColor,
-                  borderColor: `${letterColor}40`,
-                  backgroundColor: `${letterColor}10`,
-                }}
+                className="w-11 h-11 rounded-lg flex items-center justify-center text-xl font-semibold font-mono border border-[var(--panel-border)] bg-cyber-elevated text-cyber-text shrink-0"
                 initial={{ rotateY: 90, opacity: 0 }}
                 animate={{ rotateY: 0, opacity: 1 }}
                 exit={{ rotateY: -90, opacity: 0 }}
@@ -89,27 +79,22 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
             </AnimatePresence>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-cyber-text">
-                  Sign for &quot;{upperLetter}&quot;
-                </span>
-                <span className="text-[0.6rem] px-1.5 py-0.5 rounded-md bg-cyber-purple/10 border border-cyber-purple/20 text-cyber-purple font-semibold uppercase tracking-wider">
-                  ASL
-                </span>
+                <span className="text-sm font-semibold text-cyber-text">Letter {upperLetter}</span>
               </div>
-              <p className="text-xs text-cyber-text-secondary leading-relaxed mt-0.5">
+              <p className="text-xs text-cyber-text-secondary leading-relaxed mt-1">
                 {hint}
               </p>
             </div>
           </div>
 
           {/* Tip */}
-          <div className="flex items-center gap-2 pt-2 border-t border-white/[0.04]">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyber-text-muted shrink-0">
+          <div className="flex items-center gap-2 pt-2 border-t border-[var(--panel-border)]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyber-text-secondary shrink-0">
               <path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className="text-[0.65rem] text-cyber-text-muted font-medium">
-              Hold the sign steady for detection
+            <span className="text-[0.68rem] text-cyber-text-secondary font-medium">
+              Hold steady until the letter appears
             </span>
           </div>
         </div>
@@ -118,7 +103,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
         <AnimatePresence mode="wait">
           <motion.div
             key={upperLetter}
-            className="w-28 h-28 rounded-xl overflow-hidden border border-[var(--panel-border)] bg-cyber-surface shrink-0 flex items-center justify-center"
+            className="w-24 h-24 rounded-lg overflow-hidden border border-[var(--panel-border)] bg-cyber-surface shrink-0 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -128,8 +113,8 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
               <Image
                 src={`/asl/${upperLetter.toLowerCase()}.png`}
                 alt={`ASL sign for letter ${upperLetter}`}
-                width={112}
-                height={112}
+                width={96}
+                height={96}
                 className="w-full h-full object-cover"
                 priority
                 onError={() => setImgError(true)}
@@ -137,11 +122,7 @@ export default function ASLReference({ letter }: ASLReferenceProps) {
             ) : (
               /* Fallback: styled letter with hand emoji */
               <div className="flex flex-col items-center gap-1">
-                <span className="text-3xl">🤟</span>
-                <span
-                  className="text-xl font-extrabold font-mono"
-                  style={{ color: letterColor }}
-                >
+                <span className="text-xl font-semibold font-mono text-cyber-text">
                   {upperLetter}
                 </span>
               </div>

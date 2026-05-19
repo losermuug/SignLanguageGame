@@ -49,6 +49,7 @@ export interface GameActions {
   nextWord: () => void;
   resetGame: () => void;
   simulateDetection: () => void;
+  handlePrediction: (predicted: string, confidence?: number) => void;
   setDifficulty: (d: Difficulty) => void;
   dismissToast: (id: number) => void;
 }
@@ -193,6 +194,16 @@ export function useGameState(): GameState & GameActions {
     setTimer(0);
   }, [activeWord]);
 
+  const handlePrediction = useCallback((predicted: string, confidence = 1) => {
+    const normalized = predicted.toUpperCase();
+    if (!normalized || confidence < 0.4) return;
+
+    setDetectedLetter(normalized);
+    if (/^[A-Z]$/.test(normalized)) {
+      advanceLetter(normalized);
+    }
+  }, [advanceLetter]);
+
   const simulateDetection = useCallback(() => {
     if (isCompleted) return;
     advanceLetter(activeWord[charIndex]);
@@ -211,7 +222,7 @@ export function useGameState(): GameState & GameActions {
     score, streak, bestStreak, completedLetters,
     showConfetti, wordsCompleted, difficulty, timer,
     totalCorrect, totalAttempts, toasts, comboMultiplier,
-    advanceLetter, nextWord, resetGame, simulateDetection,
+    advanceLetter, nextWord, resetGame, simulateDetection, handlePrediction,
     setDifficulty, dismissToast,
   };
 }

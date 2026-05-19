@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.venv
 /.pnp
 .pnp.*
 .yarn/*
@@ -19,6 +20,10 @@
 
 # production
 /build
+
+# downloaded ML artifacts
+/models/asl/*
+!/models/asl/labels.txt
 
 # misc
 .DS_Store

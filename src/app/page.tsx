@@ -14,9 +14,6 @@ import ComboDisplay from "./components/ComboDisplay";
 import StatsPanel from "./components/StatsPanel";
 import ToastContainer from "./components/ToastContainer";
 import ASLReference from "./components/ASLReference";
-import FloatingParticles from "./components/FloatingParticles";
-import ProgressSection from "./components/ProgressSection";
-import LessonSection from "./components/LessonSection";
 
 export default function GamePage() {
   const game = useGameState();
@@ -29,7 +26,6 @@ export default function GamePage() {
   return (
     <main className="relative z-10 flex-1 flex flex-col min-h-screen">
       {game.showConfetti && <Confetti />}
-      <FloatingParticles />
       <ToastContainer toasts={game.toasts} onDismiss={game.dismissToast} />
 
       <Header
@@ -43,12 +39,14 @@ export default function GamePage() {
       <ProgressBar progress={progress} />
 
       {/* Main content grid */}
-      <div className="flex-1 flex items-start justify-center px-4 py-6 lg:px-8 lg:py-8">
-        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6">
+      <div className="flex-1 flex items-start justify-center px-4 py-5 lg:px-8 lg:py-7">
+        <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-5">
           {/* Left: Camera + Stats */}
           <div className="flex flex-col gap-5">
             <CameraSection
+              targetLetter={game.activeWord[game.charIndex] ?? ""}
               isCompleted={game.isCompleted}
+              onPrediction={game.handlePrediction}
               onSimulate={game.simulateDetection}
             />
 
@@ -104,10 +102,6 @@ export default function GamePage() {
                 onSkip={game.nextWord}
               />
             )}
-
-            <ProgressSection />
-
-            <LessonSection />
           </div>
         </div>
       </div>
