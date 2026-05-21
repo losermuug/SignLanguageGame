@@ -11,12 +11,12 @@ const features = [
   {
     icon: Target,
     title: "Үсгээр дадлага хийнэ",
-    body: "I болон U ороогүй богино үгсээр төвлөрсөн, ойлгомжтой дасгал хийлгэнэ.",
+    body: "Сурсан үсгүүдээ давтаж тоглоод, хурдан суралц.",
   },
   {
     icon: Trophy,
-    title: "Оноо ба дараалал",
-    body: "Зөв танилт бүр оноо, комбо, хурдны бонус өгч дасгалыг сонирхолтой болгоно.",
+    title: "Оноо",
+    body: "Дохионы хэлээ давтахдаа оноо цуглуулж өөрийгөө хөгжүүл.",
   },
 ];
 
@@ -68,7 +68,7 @@ export default function LandingPage() {
               style={{ animation: "slide-up 0.7s ease-out both" }}
             >
               Сур.{" "}
-              <span className="gradient-text-animated">Давт.</span>
+              <span className="gradient-text-green-animated">Давт.</span>
               <br />
               Тогло.
             </h1>
@@ -126,9 +126,15 @@ export default function LandingPage() {
           >
             <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_70%_80%_at_50%_50%,transparent_35%,rgba(0,0,0,0.52)_100%)]" />
             <ParticleTextEffect
-              words={["СУР", "ДАВТ", "ТОГЛО", "ОНОО"]}
+              words={["СУР", "ДАВТ", "ТОГЛО"]}
               fullscreen
               changeInterval={220}
+              colors={[
+                { r: 45, g: 212, b: 191 },
+                { r: 52, g: 211, b: 153 },
+                { r: 16, g: 185, b: 129 },
+                { r: 163, g: 230, b: 53 },
+              ]}
               className="opacity-95"
             />
           </div>
@@ -150,7 +156,7 @@ export default function LandingPage() {
         <div className="mb-10 max-w-xl">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyber-cyan">Боломжууд</p>
           <h2 className="text-3xl font-bold text-cyber-text sm:text-4xl">
-            Яагаад <span className="gradient-text">Дохио Тоглоом</span> вэ?
+            Яагаад <span className="gradient-text-green">Дохио Тоглоом</span> вэ?
           </h2>
           <p className="mt-3 text-sm leading-6 text-cyber-text-secondary">
             Бодит цагийн AI таних системтэй хослуулсан тоглоомын арга барил.

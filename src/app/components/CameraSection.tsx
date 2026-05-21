@@ -105,7 +105,7 @@ export default function CameraSection({
         if (!landmarkInput) {
           if (!cancelled) {
             setModelStatus("idle");
-            setStatusText("Гараа харуулна уу");
+            setStatusText("Баруун гараа харуулна уу");
           }
           return;
         }

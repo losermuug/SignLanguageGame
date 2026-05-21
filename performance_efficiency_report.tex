@@ -1,0 +1,105 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+
+\usepackage[top=1.0cm,bottom=1.0cm,left=1.0cm,right=1.0cm,columnsep=0.45cm]{geometry}
+\usepackage{fontspec}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.3pt}
+\setlength{\columnseprule}{0.2pt}
+\setlist[itemize]{leftmargin=*,nosep,itemsep=0.5pt,topsep=0.5pt}
+\setlist[enumerate]{leftmargin=*,nosep,itemsep=0.5pt,topsep=0.5pt}
+\renewcommand{\arraystretch}{1.02}
+\titleformat{\section}{\bfseries\sffamily\normalsize\color{black}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{3pt}{1pt}
+
+\begin{document}
+\fontsize{8.4}{9.6}\selectfont
+
+\twocolumn[
+{\centering
+{\sffamily\bfseries\Large Гүйцэтгэлийн үр ашигтай байдал}\\[-1pt]
+{\sffamily\bfseries\large Хугацааны төлөв байдал (Time Behaviour)}\\[2pt]
+{\small Бие даалтын товч тайлан \quad | \quad Г. Мөнхзул (23B1NUM0466)}\\[5pt]
+}
+]
+\fontsize{8.4}{9.6}\selectfont
+
+\section{Хураангуй}
+Программ хангамжийн чанарыг үнэлэх ISO/IEC 25010 стандартад \textbf{гүйцэтгэлийн үр ашигтай байдал} нь систем заасан нөхцөлд шаардлагатай үйлдлээ хэр хурдан, хэр бага нөөцөөр, ямар багтаамжтай гүйцэтгэж байгааг илэрхийлдэг. Үүний дотор \textbf{хугацааны төлөв байдал} нь хэрэглэгчийн хүсэлтэд хариу өгөх, өгөгдөл боловсруулах, нэгж хугацаанд үйлчлэх чадварыг хэмждэг тул хэрэглэгчийн мэдрэх чанарт шууд нөлөөлнө.
+
+\section{Үндсэн ойлголт}
+Гүйцэтгэлийн үр ашигтай байдлыг гурван дэд шинжээр авч үзнэ.
+
+\begin{itemize}
+  \item \textbf{Хугацааны төлөв байдал}: response time, latency, throughput, startup time зэрэг хугацааны хэмжүүр.
+  \item \textbf{Нөөц ашиглалт}: CPU, санах ой, диск, сүлжээний зурвасын өргөн зэрэг нөөцийн хэрэглээ.
+  \item \textbf{Хүчин чадал}: зэрэгцээ хэрэглэгч, хадгалалт, transaction зэрэг системийн дээд хязгаар.
+\end{itemize}
+
+Хугацааны төлөв байдал нь зөвхөн ``хурдан эсэх'' биш. Архитектур, алгоритм, өгөгдлийн сан, сүлжээ, кэш, дараалал зэрэг олон хэсгийн нийлбэр үр дүн юм.
+
+\section{Хариу өгөх хугацаа}
+\textbf{Response time} гэдэг нь хэрэглэгч команд илгээснээс хойш систем анхны үр дүнг буцаан харуулах хүртэлх нийт хугацаа юм. Үүнийг дараах хэсгүүдээр задлан хэмжвэл саатлын шалтгааныг илүү зөв олно.
+
+\begin{tabular}{@{}p{0.34\linewidth}p{0.59\linewidth}@{}}
+\toprule
+\textbf{Бүрэлдэхүүн} & \textbf{Тайлбар} \\
+\midrule
+Transport latency & Хүсэлт, хариу сүлжээгээр дамжих саатал. \\
+Processing time & Сервер логик үйлдэл, өгөгдлийн сан, CPU/санах ойн ажлыг гүйцэтгэх хугацаа. \\
+Queueing delay & Ачаалал ихсэхэд хүсэлт буферт хүлээх хугацаа. \\
+\bottomrule
+\end{tabular}
+
+Дундаж утга дангаараа хангалтгүй. Жишээ нь P50 сайн байлаа ч P99 өндөр байвал цөөн боловч бодит хэрэглэгчид маш удаан үйлчилгээ авч байна гэсэн үг.
+
+\section{Ачааллах хугацаа}
+\textbf{Startup time} нь апп бүрэн хаалттай эсвэл арын горимоос хэрэглэгч ашиглахад бэлэн болох хүртэлх хугацаа. Үүнийг дараах төлөвөөр тусад нь шалгах хэрэгтэй.
+
+\begin{itemize}
+  \item \textbf{Cold start}: процесс шинээр эхэлж, файл унших, объект үүсгэх, нөөц хуваарилах тул хамгийн удаан.
+  \item \textbf{Warm start}: өмнөх зарим нөөц дахин ашиглагдах тул cold start-аас хурдан.
+  \item \textbf{Hot start}: апп background-оос foreground руу шилжих тул хамгийн хурдан.
+\end{itemize}
+
+Вэб болон мобайл апп дээр TTFB, FCP/FCB, TTI зэрэг хэмжүүрийг салгаж харах нь чухал. TTFB нь серверийн анхны хариу, FCP нь дэлгэцэд анхны агуулга харагдах мөч, TTI нь хэрэглэгч саадгүй харилцах боломжтой болсон хугацааг илэрхийлнэ.
+
+\section{Тестлэл ба хэмжүүр}
+\begin{tabular}{@{}p{0.25\linewidth}p{0.68\linewidth}@{}}
+\toprule
+\textbf{Хэмжүүр} & \textbf{Ач холбогдол} \\
+\midrule
+P50 & Ердийн хэрэглэгчийн туршлагыг харуулна. \\
+P90/P95 & Ихэнх хэрэглэгч ямар хугацаанд хариу авч байгааг илтгэнэ. \\
+P99 & Хамгийн удаан 1\%-ийн асуудлыг илрүүлж, tail latency-г хянахад хэрэглэнэ. \\
+\bottomrule
+\end{tabular}
+
+Тестийн хэрэгслээс Apache JMeter нь GUI болон олон протоколын дэмжлэгтэй, k6 нь JavaScript-д суурилсан тул CI/CD-д тохиромжтой, Locust нь Python-оор хэрэглэгчийн үйлдлийг дуурайлгана, Gatling нь их зэрэгцээ ачааллыг үр ашигтай үүсгэдэг. Тестлэлд load, stress, scalability, spike test-ийг нөхцөлд нь тохируулан ашиглана.
+
+\section{Оновчлол}
+Хугацааны төлөв байдлыг сайжруулах үндсэн арга нь саатлын эх үүсвэрийг хэмжээд, хамгийн их нөлөөтэй хэсгээс эхэлж засах явдал юм.
+
+\begin{itemize}
+  \item Давтамжтай уншигдах өгөгдөлд кэш ашиглах.
+  \item Өгөгдлийн сангийн индексийг зөв төлөвлөх.
+  \item Удаан үйлдлийг асинхрон дараалал руу шилжүүлэх.
+  \item Frontend кодын багцлалт, зураг, эхний ачааллын хэмжээг багасгах.
+  \item Cold/Warm/Hot start тус бүрийн үр дүнг баримтжуулах.
+\end{itemize}
+
+\section{Дүгнэлт}
+Хугацааны төлөв байдал нь системийн чанарыг хэрэглэгч шууд мэдэрдэг гол үзүүлэлт юм. Тиймээс гүйцэтгэлийг зөвхөн дундаж хугацаагаар бус P95, P99, startup үе шат, бодит хэрэглэгчийн орчин, ачааллын нөхцөлтэй хамт хэмжих шаардлагатай. Ингэснээр систем хурдан ажиллахаас гадна ачаалал нэмэгдэх үед тогтвортой, таамаглаж болохуйц үйлчилгээ үзүүлнэ.
+
+{\footnotesize\textbf{Эх сурвалж:} ``Гүйцэтгэлийн үр ашигтай байдал (Performance efficiency)'' presentation; ``Software Time Behavior Research'' судалгааны материал.}
+
+\end{document}

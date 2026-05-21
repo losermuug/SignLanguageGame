@@ -55,6 +55,7 @@ export interface GameActions {
 }
 
 let toastIdCounter = 0;
+const MIN_PREDICTION_CONFIDENCE = 0.65;
 
 export function useGameState(): GameState & GameActions {
   const [difficulty, setDifficultyState] = useState<Difficulty>("medium");
@@ -196,7 +197,7 @@ export function useGameState(): GameState & GameActions {
 
   const handlePrediction = useCallback((predicted: string, confidence = 1) => {
     const normalized = predicted.toUpperCase();
-    if (!normalized || confidence < 0.4) return;
+    if (!normalized || confidence < MIN_PREDICTION_CONFIDENCE) return;
 
     setDetectedLetter(normalized);
     if (/^[A-Z]$/.test(normalized)) {

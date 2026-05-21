@@ -366,6 +366,22 @@ body::after {
   animation: gradient-shift 4s ease-in-out infinite;
 }
 
+.gradient-text-green {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-success));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-green-animated {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-success), var(--accent-cyan));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease-in-out infinite;
+}
+
 /* Stat icon containers with unique colors */
 .stat-icon-cyan {
   background: linear-gradient(135deg, rgba(45, 212, 191, 0.15), rgba(45, 212, 191, 0.05));

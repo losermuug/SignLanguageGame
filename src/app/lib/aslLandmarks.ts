@@ -89,6 +89,10 @@ export function getLandmarkPredictionInput(
 
   drawLandmarks(canvas, smoothedRightHand);
 
+  if (smoothedRightHand.length < HAND_LANDMARK_COUNT) {
+    return null;
+  }
+
   const features = [
     ...axisValues("x", smoothedRightHand, smoothedLeftHand, smoothedPose),
     ...axisValues("y", smoothedRightHand, smoothedLeftHand, smoothedPose),
